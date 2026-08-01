@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Trust Wallet Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body class="bg-gray-100 p-4 md:p-6">
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <!-- Header & Live Status -->
+        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-600">Admin Control Panel</h1>
+                <p class="text-sm text-gray-500 font-semibold mt-1">Trust Wallet Project - Realtime Configuration</p>
+            </div>
+            <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold">Live Connected</span>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
+                <p class="text-xs font-bold text-gray-500 uppercase">Total Users</p>
+                <p class="text-2xl font-extrabold text-blue-600 mt-1" id="statTotalUsers">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+                <p class="text-xs font-bold text-gray-500 uppercase">System Balance</p>
+                <p class="text-2xl font-extrabold text-green-600 mt-1" id="statSystemBalance">৳0.00</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-pink-500">
+                <p class="text-xs font-bold text-gray-500 uppercase">Pending Deposits</p>
+                <p class="text-2xl font-extrabold text-pink-600 mt-1" id="statPendingDeposits">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-orange-500">
+                <p class="text-xs font-bold text-gray-500 uppercase">Pending Withdraws</p>
+                <p class="text-2xl font-extrabold text-orange-600 mt-1" id="statPendingWithdraws">0</p>
+            </div>
+        </div>
+
+         <!-- Search User by UID -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-600">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Search User by UID / Login ID</h2>
+            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <input type="text" id="searchUidInput" class="flex-1 p-2.5 border border-gray-300 rounded-md text-sm font-semibold focus:outline-none focus:border-purple-600" placeholder="Enter User ID (e.g., USR123456) or Phone Number">
+                <button onclick="searchUserByUid()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-md font-bold text-sm transition">Search</button>
+            </div>
+
+            <!-- User Search Result -->
+            <div id="userSearchResult" class="hidden bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <!-- Javascript will render user info here -->
+            </div>
+        </div>
+
+        <!-- Deposit Methods & Numbers (bKash & Nagad) -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-600">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Deposit Methods & Settings (bKash & Nagad)</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- bKash Settings -->
+                <div class="bg-pink-50 p-4 rounded-lg border border-pink-200 space-y-3">
+                    <h3 class="font-bold text-pink-700 text-lg border-b pb-2">bKash Settings</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Title</label>
+                        <input type="text" id="bkashTitle" class="mt-1 block w-full p-2 border rounded text-sm" placeholder="e.g., Send Money to our bKash Personal number:">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Number</label>
+                        <input type="text" id="bkashNumber" class="mt-1 block w-full p-2 border rounded text-sm font-mono font-bold" placeholder="018XXXXXXXX">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Instruction</label>
+                        <input type="text" id="bkashInstruction" class="mt-1 block w-full p-2 border rounded text-sm" placeholder="e.g., After payment, enter Transaction ID and Number below.">
+                    </div>
+                </div>
+
+                <!-- Nagad Settings -->
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200 space-y-3">
+                    <h3 class="font-bold text-orange-700 text-lg border-b pb-2">Nagad Settings</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Title</label>
+                        <input type="text" id="nagadTitle" class="mt-1 block w-full p-2 border rounded text-sm" placeholder="e.g., Send Money to our Nagad Personal number:">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Number</label>
+                        <input type="text" id="nagadNumber" class="mt-1 block w-full p-2 border rounded text-sm font-mono font-bold" placeholder="018XXXXXXXX">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600">Instruction</label>
+                        <input type="text" id="nagadInstruction" class="mt-1 block w-full p-2 border rounded text-sm" placeholder="e.g., After payment, enter Transaction ID and Number below.">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="saveDepositSettings()" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-md font-bold text-sm w-full md:w-auto">
+                Save Deposit Settings
+            </button>
+        </div>
+
+        <!-- Gift Code Creator & Control -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-yellow-500">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Gift Code Generator & Control</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600">Code</label>
+                    <input type="text" id="giftCodeInput" class="mt-1 block w-full p-2.5 border rounded text-sm font-bold uppercase" placeholder="e.g., FREE50">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600">Amount (৳)</label>
+                    <input type="number" id="giftAmountInput" class="mt-1 block w-full p-2.5 border rounded text-sm font-bold" placeholder="e.g., 50">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600">Max Uses</label>
+                    <input type="number" id="giftMaxUsesInput" class="mt-1 block w-full p-2.5 border rounded text-sm font-bold" placeholder="e.g., 100">
+                </div>
+            </div>
+            <button onclick="createGiftCode()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-md font-bold text-sm">
+                Create New Gift Code
+            </button>
+
+            <div class="mt-6">
+                <h3 class="font-bold text-gray-700 mb-2">Existing Gift Codes</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 uppercase text-xs leading-normal">
+                                <th class="py-2.5 px-4 text-left">Code</th>
+                                <th class="py-2.5 px-4 text-left">Amount</th>
+                                <th class="py-2.5 px-4 text-left">Uses (Used / Max)</th>
+                                <th class="py-2.5 px-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="giftCodesTableBody" class="text-gray-600 text-sm">
+                            <tr><td colspan="4" class="text-center py-4 text-gray-400">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Deposit Verification -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Pending Deposit Verification</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal">
+                            <th class="py-3 px-4 text-left">User</th>
+                            <th class="py-3 px-4 text-left">Method & Sender Number</th>
+                            <th class="py-3 px-4 text-left">Amount</th>
+                            <th class="py-3 px-4 text-left">TrxID</th>
+                            <th class="py-3 px-4 text-left">Time</th>
+                            <th class="py-3 px-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="depositTableBody" class="text-gray-600 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pending Withdraw Verification -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Pending Withdraw Verification</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal">
+                            <th class="py-3 px-4 text-left">User</th>
+                            <th class="py-3 px-4 text-left">Method & Withdraw Number</th>
+                            <th class="py-3 px-4 text-left">Amount</th>
+                            <th class="py-3 px-4 text-left">Time</th>
+                            <th class="py-3 px-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="withdrawTableBody" class="text-gray-600 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Registered Users List -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Registered Users (Last 30 Users)</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal font-bold">
+                            <th class="py-2.5 px-4 text-left">Nick Name</th>
+                            <th class="py-2.5 px-4 text-left">User ID (UID)</th>
+                            <th class="py-2.5 px-4 text-left">Phone / Login ID</th>
+                            <th class="py-2.5 px-4 text-left">Balance</th>
+                            <th class="py-2.5 px-4 text-left">Device ID</th>
+                            <th class="py-2.5 px-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody" class="text-gray-600 text-sm">
+                        <tr><td colspan="6" class="text-center py-4 text-gray-400">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Notification Broadcast Panel -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Broadcast Notification</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Notification Title</label>
+                    <input type="text" id="notifTitle" class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-sm" placeholder="e.g., New Update!">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Message</label>
+                    <textarea id="notifBody" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-sm" placeholder="Write your notification details here..."></textarea>
+                </div>
+                <button onclick="sendNotification()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">Send Notification</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Popup Modal Component -->
+    <div id="notificationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-xl border-t-4 border-indigo-600 space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 id="modalNotifTitle" class="text-lg font-bold text-gray-800">Notification</h3>
+                <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-semibold">Announcement</span>
+            </div>
+            <p id="modalNotifBody" class="text-sm text-gray-600 whitespace-pre-line"></p>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeNotificationModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded text-sm font-bold transition">OK, Understood</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_7LZ-EAlftdWbo7ehPbScb4p7xlHW3jU",
+            authDomain: "trust-wallet-d69ec.firebaseapp.com",
+            databaseURL: "https://trust-wallet-d69ec-default-rtdb.firebaseio.com",
+            projectId: "trust-wallet-d69ec",
+            storageBucket: "trust-wallet-d69ec.firebasestorage.app",
+            messagingSenderId: "1012321096147",
+            appId: "1:1012321096147:web:c5d3733ec452edb727df26",
+            measurementId: "G-9NJP5RJE68"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        function sanitizeKey(key) {
+            return String(key).replace(/[.#$\[\]]/g, '_');
+        }
+
+        function getFormattedServerTime() {
+            return new Date().toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+        }
+
+        // ================= STATS LOAD =================
+        function loadStats() {
+            db.ref('users').on('value', (snapshot) => {
+                let totalUsers = 0;
+                let totalSystemBalance = 0;
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const u = child.val();
+                        totalUsers++;
+                        totalSystemBalance += (u.balance || 0);
+                    });
+                }
+                document.getElementById('statTotalUsers').innerText = totalUsers;
+                document.getElementById('statSystemBalance').innerText = '৳' + totalSystemBalance.toFixed(2);
+            });
+            
+            db.ref('pendingDeposits').on('value', (snapshot) => {
+                let pending = 0;
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        if (child.val().status === 'Pending') pending++;
+                    });
+                }
+                document.getElementById('statPendingDeposits').innerText = pending;
+            });
+
+            db.ref('pendingWithdraws').on('value', (snapshot) => {
+                let pending = 0;
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        if (child.val().status === 'Pending') pending++;
+                    });
+                }
+                document.getElementById('statPendingWithdraws').innerText = pending;
+            });
+        }
+
+        // ================= SEARCH USER =================
+        let currentSearchedUserKey = null;
+
+        function searchUserByUid() {
+            const query = document.getElementById('searchUidInput').value.trim();
+            if (!query) {
+                alert('Please enter a User ID or Login ID!');
+                return;
+            }
+
+            db.ref('users').once('value', (snapshot) => {
+                let foundUser = null;
+                let foundKey = null;
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnap) => {
+                        const u = childSnap.val();
+                        if (u.userId === query || u.loginId === query || childSnap.key === sanitizeKey(query)) {
+                            foundUser = u;
+                            foundKey = childSnap.key;
+                        }
+                    });
+                }
+
+                const resultDiv = document.getElementById('userSearchResult');
+                if (foundUser && foundKey) {
+                    currentSearchedUserKey = foundKey;
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <p class="text-sm"><strong>Name (Nick):</strong> ${foundUser.nick || 'N/A'}</p>
+                                <p class="text-sm"><strong>User ID (UID):</strong> <span class="bg-indigo-100 text-indigo-800 font-mono font-bold px-2 py-0.5 rounded">${foundUser.userId}</span></p>
+                                <p class="text-sm"><strong>Login ID:</strong> ${foundUser.loginId}</p>
+                                <p class="text-sm"><strong>Device ID:</strong> <span class="text-xs text-gray-500 font-mono">${foundUser.deviceId || 'N/A'}</span></p>
+                                <p class="text-sm"><strong>Refer Count:</strong> ${foundUser.referCount || 0} users</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-sm text-green-700 font-bold"><strong>Current Balance:</strong> ৳<span id="displayUserBalance">${Number(foundUser.balance || 0).toFixed(2)}</span></p>
+                                <p class="text-sm"><strong>Total Deposit:</strong> ৳${Number(foundUser.totalDeposit || 0).toFixed(2)}</p>
+                                <p class="text-sm"><strong>Total Withdraw:</strong> ৳${Number(foundUser.totalWithdraw || 0).toFixed(2)}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t flex flex-col md:flex-row items-center gap-3">
+                            <input type="number" id="updateBalanceInput" class="p-2 border rounded text-sm w-full md:w-48 focus:outline-none" placeholder="Enter amount">
+                            <button onclick="modifyUserBalance('set')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-xs font-bold w-full md:w-auto">Set Balance</button>
+                            <button onclick="modifyUserBalance('add')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-xs font-bold w-full md:w-auto">+ Add</button>
+                            <button onclick="modifyUserBalance('sub')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold w-full md:w-auto">- Deduct</button>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = `<p class="text-red-500 font-bold text-center">No user found!</p>`;
+                }
+            });
+        }
+
+        function modifyUserBalance(action) {
+            if (!currentSearchedUserKey) return;
+            const amtInput = document.getElementById('updateBalanceInput');
+            const val = parseFloat(amtInput.value);
+
+            if (isNaN(val) || val < 0) {
+                alert('Please enter a valid amount!');
+                return;
+            }
+
+            db.ref('users/' + currentSearchedUserKey).once('value', (snap) => {
+                if (snap.exists()) {
+                    const user = snap.val();
+                    let currentBal = Number(user.balance || 0);
+                    let newBal = currentBal;
+                    let histType = '';
+                    let histAmt = val;
+
+                    if (action === 'set') {
+                        newBal = val;
+                        histType = 'Admin Balance Set';
+                        histAmt = val - currentBal;
+                    } else if (action === 'add') {
+                        newBal = currentBal + val;
+                        histType = 'Admin Balance Added';
+                        histAmt = val;
+                    } else if (action === 'sub') {
+                        newBal = Math.max(0, currentBal - val);
+                        histType = 'Admin Balance Deducted';
+                        histAmt = -Math.min(val, currentBal);
+                    }
+
+                    const updatedHistory = user.history || [];
+                    updatedHistory.push({
+                        type: histType,
+                        amount: histAmt,
+                        time: getFormattedServerTime()
+                    });
+
+                    db.ref('users/' + currentSearchedUserKey).update({ 
+                        balance: newBal,
+                        history: updatedHistory
+                    })
+                    .then(() => {
+                        alert(`Balance updated successfully! New balance: ৳${newBal.toFixed(2)}`);
+                        document.getElementById('displayUserBalance').innerText = newBal.toFixed(2);
+                        amtInput.value = '';
+                    }).catch((err) => {
+                        alert('Error occurred: ' + err.message);
+                    });
+                }
+            });
+        }
+
+        // ================= DEPOSIT METHODS =================
+        db.ref('admin_settings/deposit_methods').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.bKash) {
+                    document.getElementById('bkashTitle').value = data.bKash.title || '';
+                    document.getElementById('bkashNumber').value = data.bKash.number || '';
+                    document.getElementById('bkashInstruction').value = data.bKash.instruction || '';
+                }
+                if (data.Nagad) {
+                    document.getElementById('nagadTitle').value = data.Nagad.title || '';
+                    document.getElementById('nagadNumber').value = data.Nagad.number || '';
+                    document.getElementById('nagadInstruction').value = data.Nagad.instruction || '';
+                }
+            }
+        });
+
+        function saveDepositSettings() {
+            const bkashTitle = document.getElementById('bkashTitle').value.trim();
+            const bkashNumber = document.getElementById('bkashNumber').value.trim();
+            const bkashInstruction = document.getElementById('bkashInstruction').value.trim();
+
+            const nagadTitle = document.getElementById('nagadTitle').value.trim();
+            const nagadNumber = document.getElementById('nagadNumber').value.trim();
+            const nagadInstruction = document.getElementById('nagadInstruction').value.trim();
+
+            if (!bkashNumber || !nagadNumber) {
+                alert('Please enter both bKash and Nagad numbers!');
+                return;
+            }
+
+            db.ref('admin_settings/deposit_methods').set({
+                bKash: {
+                    title: bkashTitle || "Send Money to our bKash Personal number:",
+                    number: bkashNumber,
+                    instruction: bkashInstruction || "After payment, enter Transaction ID and Number below."
+                },
+                Nagad: {
+                    title: nagadTitle || "Send Money to our Nagad Personal number:",
+                    number: nagadNumber,
+                    instruction: nagadInstruction || "After payment, enter Transaction ID and Number below."
+                }
+            }).then(() => {
+                alert('bKash and Nagad settings saved successfully!');
+            }).catch((err) => {
+                alert('Error occurred: ' + err.message);
+            });
+        }
+
+        // ================= GIFT CODES =================
+        function createGiftCode() {
+            const code = document.getElementById('giftCodeInput').value.trim().toUpperCase();
+            const amount = parseFloat(document.getElementById('giftAmountInput').value);
+            const maxUses = parseInt(document.getElementById('giftMaxUsesInput').value);
+
+            if (!code || isNaN(amount) || amount <= 0 || isNaN(maxUses) || maxUses <= 0) {
+                alert('Please fill all gift code details correctly!');
+                return;
+            }
+
+            db.ref('gift_codes/' + code).set({
+                amount: amount,
+                maxUses: maxUses,
+                totalUsed: 0,
+                usedBy: {}
+            }).then(() => {
+                alert(`Gift code "${code}" created successfully!`);
+                document.getElementById('giftCodeInput').value = '';
+                document.getElementById('giftAmountInput').value = '';
+                document.getElementById('giftMaxUsesInput').value = '';
+            }).catch((err) => {
+                alert('Error creating gift code: ' + err.message);
+            });
+        }
+
+        function loadGiftCodes() {
+            db.ref('gift_codes').on('value', (snapshot) => {
+                const tableBody = document.getElementById('giftCodesTableBody');
+                tableBody.innerHTML = '';
+                let hasData = false;
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        hasData = true;
+                        const code = childSnapshot.key;
+                        const data = childSnapshot.val();
+                        tableBody.innerHTML += `
+                            <tr class="border-b hover:bg-gray-50 text-xs md:text-sm">
+                                <td class="py-2.5 px-4 font-mono font-bold text-gray-800">${code}</td>
+                                <td class="py-2.5 px-4 font-bold text-green-600">৳${Number(data.amount || 0).toFixed(2)}</td>
+                                <td class="py-2.5 px-4 font-semibold text-indigo-600">${data.totalUsed || 0} / ${data.maxUses || 1}</td>
+                                <td class="py-2.5 px-4 text-center">
+                                    <button onclick="deleteGiftCode('${code}')" class="bg-red-500 hover:bg-red-600 text-white text-[10px] md:text-xs px-2.5 py-1 rounded font-bold transition">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                if (!hasData) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-gray-400">No gift codes found</td></tr>`;
+                }
+            });
+        }
+
+        function deleteGiftCode(code) {
+            if (!confirm(`Are you sure you want to delete "${code}" gift code?`)) return;
+            db.ref('gift_codes/' + code).remove()
+                .then(() => alert('Gift code deleted successfully!'));
+        }
+
+        // ================= PENDING DEPOSITS =================
+        db.ref('pendingDeposits').on('value', (snapshot) => {
+            const tableBody = document.getElementById('depositTableBody');
+            tableBody.innerHTML = '';
+            let hasData = false;
+
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const id = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    if (data.status === 'Pending') {
+                        hasData = true;
+                        const badgeColor = data.method === 'bKash' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700';
+                        tableBody.innerHTML += `
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-gray-800">${data.nick || 'User'}</div>
+                                    <div class="text-xs text-indigo-600 font-mono font-bold">UID: ${data.userId || data.uid || 'N/A'}</div>
+                                    <div class="text-xs text-gray-500">${data.loginId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 text-xs font-bold rounded ${badgeColor}">${data.method}</span>
+                                    <div class="text-xs font-mono font-semibold text-gray-700 mt-1">${data.senderNumber}</div>
+                                </td>
+                                <td class="py-3 px-4 font-bold text-green-600">৳${data.amount}</td>
+                                <td class="py-3 px-4 font-mono text-xs font-bold text-gray-800">${data.trxId}</td>
+                                <td class="py-3 px-4 text-xs text-gray-500">${data.time || ''}</td>
+                                <td class="py-3 px-4 text-center space-x-1">
+                                    <button onclick="approveDeposit('${id}', '${data.loginId}', ${data.amount})" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-semibold">Approve</button>
+                                    <button onclick="rejectDeposit('${id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">Reject</button>
+                                </td>
+                            </tr>`;
+                    }
+                });
+            }
+
+            if (!hasData) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">No pending deposits</td></tr>`;
+            }
+        });
+
+        function approveDeposit(depositId, loginId, amount) {
+            if (!confirm(`Are you sure to approve ৳${amount} deposit?`)) return;
+            const safeKey = sanitizeKey(loginId);
+
+            db.ref('users/' + safeKey).once('value', (userSnap) => {
+                if (userSnap.exists()) {
+                    const user = userSnap.val();
+                    const currentBalance = Number(user.balance || 0);
+                    const currentTotalDeposit = Number(user.totalDeposit || 0);
+                    const updatedHistory = user.history || [];
+
+                    let found = false;
+                    for (let i = 0; i < updatedHistory.length; i++) {
+                        if (updatedHistory[i].id === depositId) {
+                            updatedHistory[i].status = "Approved";
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        updatedHistory.push({
+                            id: depositId,
+                            type: 'Deposit Approved',
+                            amount: Number(amount),
+                            status: 'Approved',
+                            time: getFormattedServerTime()
+                        });
+                    }
+
+                    db.ref('users/' + safeKey).update({
+                        balance: currentBalance + Number(amount),
+                        totalDeposit: currentTotalDeposit + Number(amount),
+                        history: updatedHistory
+                    });
+
+                    db.ref('pendingDeposits/' + depositId).update({ status: 'Approved' })
+                        .then(() => alert('Deposit approved and user balance updated successfully!'));
+                } else {
+                    alert('User data not found!');
+                }
+            });
+        }
+
+        function rejectDeposit(depositId) {
+            if (!confirm('Are you sure to reject this deposit?')) return;
+            
+            db.ref('pendingDeposits/' + depositId).once('value', (depSnap) => {
+                if (depSnap.exists()) {
+                    const depData = depSnap.val();
+                    const safeKey = sanitizeKey(depData.loginId);
+
+                    db.ref('users/' + safeKey).once('value', (userSnap) => {
+                        if (userSnap.exists()) {
+                            const user = userSnap.val();
+                            const updatedHistory = user.history || [];
+
+                            let found = false;
+                            for (let i = 0; i < updatedHistory.length; i++) {
+                                if (updatedHistory[i].id === depositId) {
+                                    updatedHistory[i].status = "Rejected";
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found) {
+                                updatedHistory.push({
+                                    id: depositId,
+                                    type: `Deposit Rejected (${depData.method})`,
+                                    amount: Number(depData.amount),
+                                    status: 'Rejected',
+                                    time: getFormattedServerTime()
+                                });
+                            }
+
+                            db.ref('users/' + safeKey).update({ history: updatedHistory });
+                        }
+                    });
+                }
+
+                db.ref('pendingDeposits/' + depositId).update({ status: 'Rejected' })
+                    .then(() => alert('Deposit rejected and user history updated!'));
+            });
+        }
+
+        // ================= PENDING WITHDRAWS =================
+        db.ref('pendingWithdraws').on('value', (snapshot) => {
+            const tableBody = document.getElementById('withdrawTableBody');
+            tableBody.innerHTML = '';
+            let hasData = false;
+
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const id = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    if (data.status === 'Pending') {
+                        hasData = true;
+                        const badgeColor = data.method === 'bKash' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700';
+                        tableBody.innerHTML += `
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-gray-800">${data.nick || 'User'}</div>
+                                    <div class="text-xs text-indigo-600 font-mono font-bold">UID: ${data.userId || data.uid || 'N/A'}</div>
+                                    <div class="text-xs text-gray-500">${data.loginId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 text-xs font-bold rounded ${badgeColor}">${data.method}</span>
+                                    <div class="text-xs font-mono font-bold text-indigo-700 mt-1">${data.withdrawNumber}</div>
+                                </td>
+                                <td class="py-3 px-4 font-bold text-red-600">৳${data.amount}</td>
+                                <td class="py-3 px-4 text-xs text-gray-500">${data.time || ''}</td>
+                                <td class="py-3 px-4 text-center space-x-1">
+                                    <button onclick="rejectWithdraw('${id}', '${data.loginId}', ${data.amount})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold">Reject & Refund</button>
+                                    <button onclick="completeWithdraw('${id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">Paid / Complete</button>
+                                </td>
+                            </tr>`;
+                    }
+                });
+            }
+
+            if (!hasData) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-400">No pending withdraws</td></tr>`;
+            }
+        });
+
+        function completeWithdraw(withdrawId) {
+            if (!confirm('Are you sure payment is sent? Mark as completed?')) return;
+
+            db.ref('pendingWithdraws/' + withdrawId).once('value', (wdSnap) => {
+                if (wdSnap.exists()) {
+                    const wdData = wdSnap.val();
+                    const safeKey = sanitizeKey(wdData.loginId);
+                    const amount = Number(wdData.amount || 0);
+
+                    db.ref('users/' + safeKey).once('value', (userSnap) => {
+                        if (userSnap.exists()) {
+                            const user = userSnap.val();
+                            const updatedHistory = user.history || [];
+
+                            let found = false;
+                            for (let i = 0; i < updatedHistory.length; i++) {
+                                if (updatedHistory[i].id === withdrawId || 
+                                    (updatedHistory[i].type && updatedHistory[i].type.includes('Withdraw') && 
+                                     Math.abs(updatedHistory[i].amount) === amount && 
+                                     updatedHistory[i].status === 'Pending')) {
+                                    updatedHistory[i].status = 'Completed';
+                                    updatedHistory[i].type = `Withdraw Completed (${wdData.method})`;
+                                    updatedHistory[i].amount = -amount;
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found) {
+                                updatedHistory.push({
+                                    id: withdrawId,
+                                    type: `Withdraw Completed (${wdData.method})`,
+                                    amount: -amount,
+                                    status: 'Completed',
+                                    time: getFormattedServerTime()
+                                });
+                            }
+
+                            db.ref('users/' + safeKey).update({ history: updatedHistory });
+                        }
+                    });
+                }
+
+                db.ref('pendingWithdraws/' + withdrawId).update({ status: 'Completed' })
+                    .then(() => alert('Withdraw marked as completed and user history updated!'));
+            });
+        }
+
+        function rejectWithdraw(withdrawId, loginId, amount) {
+            if (!confirm('Reject withdraw and refund balance to user? Are you sure?')) return;
+            const safeKey = sanitizeKey(loginId);
+            amount = Number(amount);
+
+            db.ref('users/' + safeKey).once('value', (userSnap) => {
+                if (userSnap.exists()) {
+                    const user = userSnap.val();
+                    const currentBalance = Number(user.balance || 0);
+                    const currentTotalWithdraw = Number(user.totalWithdraw || 0);
+                    const updatedHistory = user.history || [];
+
+                    let found = false;
+                    for (let i = 0; i < updatedHistory.length; i++) {
+                        if (updatedHistory[i].id === withdrawId) {
+                            updatedHistory[i].status = 'Rejected';
+                            updatedHistory[i].type = 'Withdraw Refunded';
+                            updatedHistory[i].amount = amount;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        updatedHistory.push({
+                            id: withdrawId,
+                            type: 'Withdraw Refunded',
+                            amount: amount,
+                            status: 'Rejected',
+                            time: getFormattedServerTime()
+                        });
+                    }
+
+                    db.ref('users/' + safeKey).update({
+                        balance: currentBalance + amount,
+                        totalWithdraw: Math.max(0, currentTotalWithdraw - amount),
+                        history: updatedHistory
+                    });
+
+                    db.ref('pendingWithdraws/' + withdrawId).update({ status: 'Rejected' })
+                        .then(() => alert('Withdraw rejected and refunded to user!'));
+                }
+            });
+        }
+
+        // ================= USERS LIST =================
+        function loadUsersList() {
+            db.ref('users').limitToLast(30).on('value', (snapshot) => {
+                const tableBody = document.getElementById('usersTableBody');
+                tableBody.innerHTML = '';
+                if (snapshot.exists()) {
+                    const users = [];
+                    snapshot.forEach(child => {
+                        users.push({ key: child.key, ...child.val() });
+                    });
+                    
+                    users.reverse().forEach(u => {
+                        tableBody.innerHTML += `
+                            <tr class="border-b hover:bg-gray-50 text-xs md:text-sm">
+                                <td class="py-2.5 px-4 font-bold text-gray-800">${u.nick || 'N/A'}</td>
+                                <td class="py-2.5 px-4 font-mono font-bold text-indigo-600">${u.userId || 'N/A'}</td>
+                                <td class="py-2.5 px-4 text-gray-500">${u.loginId}</td>
+                                <td class="py-2.5 px-4 font-bold text-green-600">৳${Number(u.balance || 0).toFixed(2)}</td>
+                                <td class="py-2.5 px-4 font-mono text-gray-400 text-xs truncate max-w-[150px]" title="${u.deviceId || ''}">${u.deviceId || 'N/A'}</td>
+                                <td class="py-2.5 px-4 text-center">
+                                    <button onclick="selectAndSearchUser('${u.userId || u.loginId}')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded transition">Inspect</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">No users found</td></tr>`;
+                }
+            });
+        }
+
+        function selectAndSearchUser(id) {
+            document.getElementById('searchUidInput').value = id;
+            searchUserByUid();
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+        }
+
+        // ================= NOTIFICATIONS (SEND & RECEIVE LOGIC) =================
+        function sendNotification() {
+            const title = document.getElementById('notifTitle').value.trim();
+            const body = document.getElementById('notifBody').value.trim();
+            if (!title || !body) {
+                alert('Please enter both title and message!');
+                return;
+            }
+            db.ref('notifications').push({
+                title: title,
+                body: body,
+                timestamp: Date.now()
+            }).then(() => {
+                alert('Notification broadcasted successfully!');
+                document.getElementById('notifTitle').value = '';
+                document.getElementById('notifBody').value = '';
+            }).catch((error) => {
+                alert('Error occurred: ' + error.message);
+            });
+        }
+
+        // Realtime Notification Receiver Logic for Clients/Dashboard
+        function listenForNotifications() {
+            let isInitialLoad = true;
+            db.ref('notifications').limitToLast(1).on('child_added', (snapshot) => {
+                if (isInitialLoad) {
+                    return; // Skip old notifications when opening the page
+                }
+                const notif = snapshot.val();
+                if (notif) {
+                    showNotificationModal(notif.title, notif.body);
+                }
+            });
+
+            // Turn off initial load flag after 1.5 seconds
+            setTimeout(() => {
+                isInitialLoad = false;
+            }, 1500);
+        }
+
+        function showNotificationModal(title, body) {
+            document.getElementById('modalNotifTitle').innerText = title;
+            document.getElementById('modalNotifBody').innerText = body;
+            document.getElementById('notificationModal').classList.remove('hidden');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notificationModal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            loadStats();
+            loadGiftCodes();
+            loadUsersList();
+            listenForNotifications(); // Active notification listener
+        }
+    </script> 
+</body>
+</html>
