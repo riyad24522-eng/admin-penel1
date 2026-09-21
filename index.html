@@ -4,121 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Trust Wallet</title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== Global Reset & Base ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f1f5f9;
-        }
-
-        /* ===== Sidebar ===== */
-        .sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 100;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-        }
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
-        }
-        .sidebar-brand {
-            padding: 24px 20px;
-            border-bottom: 1px solid #334155;
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .sidebar-brand h2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #a5b4fc;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .sidebar-brand h2 i {
-            color: #fcd34d;
-        }
-        .sidebar-brand span {
-            font-size: 11px;
-            color: #94a3b8;
-            font-weight: 400;
-            display: block;
-            margin-top: 4px;
-            padding-left: 34px;
-        }
-
-        /* ===== Navigation Buttons ===== */
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
-            padding: 13px 20px;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border-left: 4px solid transparent;
-            text-align: left;
-            position: relative;
-        }
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #f1f5f9;
-        }
-        .nav-btn.active {
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-            border-left-color: #818cf8;
-        }
-        .nav-btn i {
-            width: 24px;
-            font-size: 17px;
-            text-align: center;
-            transition: 0.2s;
-        }
-        .nav-btn .badge {
-            margin-left: auto;
-            background: #334155;
-            color: #e2e8f0;
-            font-size: 10px;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-        }
-        .nav-btn.active .badge {
-            background: #4f46e5;
-            color: white;
-        }
-
-        /* Unique button colors */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; }
+        .sidebar { width: 250px; min-height: 100vh; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: #e2e8f0; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; transition: transform 0.3s ease; z-index: 100; box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2); }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        .sidebar-brand { padding: 24px 20px; border-bottom: 1px solid #334155; background: rgba(255, 255, 255, 0.03); }
+        .sidebar-brand h2 { font-size: 20px; font-weight: 800; color: #a5b4fc; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+        .sidebar-brand h2 i { color: #fcd34d; }
+        .sidebar-brand span { font-size: 11px; color: #94a3b8; font-weight: 400; display: block; margin-top: 4px; padding-left: 34px; }
+        .nav-btn { display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 20px; background: transparent; border: none; color: #94a3b8; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; border-left: 4px solid transparent; text-align: left; position: relative; }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.06); color: #f1f5f9; }
+        .nav-btn.active { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-left-color: #818cf8; }
+        .nav-btn i { width: 24px; font-size: 17px; text-align: center; transition: 0.2s; }
+        .nav-btn .badge { margin-left: auto; background: #334155; color: #e2e8f0; font-size: 10px; padding: 2px 10px; border-radius: 12px; font-weight: 700; }
+        .nav-btn.active .badge { background: #4f46e5; color: white; }
         .nav-btn[data-page="dashboard"] i { color: #60a5fa; }
         .nav-btn[data-page="search"] i { color: #a78bfa; }
         .nav-btn[data-page="message"] i { color: #f472b6; }
@@ -133,366 +38,147 @@
         .nav-btn[data-page="game-stats"] i { color: #f472b6; }
         .nav-btn[data-page="admin-notices"] i { color: #fbbf24; }
         .nav-btn[data-page="blocked-users"] i { color: #ef4444; }
-
-        /* ===== Content Area ===== */
-        .content-area {
-            flex: 1;
-            padding: 24px 28px;
-            background: #f1f5f9;
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-
-        /* ===== Page Sections ===== */
-        .page-section {
-            display: none;
-            animation: fadeSlide 0.35s ease;
-        }
-        .page-section.active {
-            display: block;
-        }
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== Mobile Responsive ===== */
-        .hamburger {
-            display: none;
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            font-size: 22px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.2s;
-        }
+        .content-area { flex: 1; padding: 24px 28px; background: #f1f5f9; min-height: 100vh; overflow-y: auto; }
+        .page-section { display: none; animation: fadeSlide 0.35s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .hamburger { display: none; background: #0f172a; color: white; border: none; padding: 10px 16px; font-size: 22px; cursor: pointer; border-radius: 10px; transition: 0.2s; }
         .hamburger:hover { background: #1e293b; }
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 99;
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                transform: translateX(-100%);
-                width: 280px;
-                height: 100vh;
-                z-index: 100;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay.show { display: block; }
-            .hamburger { display: inline-block; }
-            .content-area { padding: 16px; }
-        }
-
-        /* ===== Utility ===== */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 99; }
+        @media (max-width: 768px) { .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); width: 280px; height: 100vh; z-index: 100; } .sidebar.open { transform: translateX(0); } .sidebar-overlay.show { display: block; } .hamburger { display: inline-block; } .content-area { padding: 16px; } }
         .table-wrap { overflow-x: auto; }
         table { min-width: 600px; border-collapse: collapse; }
-        .stat-card {
-            transition: all 0.2s;
-            border-radius: 16px;
-        }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
-        }
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-            padding-bottom: 14px;
-            border-bottom: 2px solid #e2e8f0;
-        }
+        .stat-card { transition: all 0.2s; border-radius: 16px; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07); }
+        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 2px solid #e2e8f0; }
         .section-header i { font-size: 26px; color: #4f46e5; }
         .section-header h2 { font-size: 22px; font-weight: 700; color: #0f172a; }
-        .btn {
-            transition: all 0.2s;
-            cursor: pointer;
-        }
+        .btn { transition: all 0.2s; cursor: pointer; }
         .btn:active { transform: scale(0.96); }
-
-        /* ===== Modal ===== */
-        #notificationModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
+        #notificationModal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 999; align-items: center; justify-content: center; padding: 16px; }
         #notificationModal.show { display: flex; }
-        #notificationModal .modal-box {
-            background: white;
-            border-radius: 20px;
-            max-width: 480px;
-            width: 100%;
-            padding: 28px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-            border-top: 5px solid #4f46e5;
-        }
-
-        /* ===== Loader ===== */
-        .loader {
-            border: 3px solid #e2e8f0;
-            border-top: 3px solid #4f46e5;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            animation: spin 0.8s linear infinite;
-            margin: 10px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ===== Deposit Settings - Dynamic Entries ===== */
-        .number-entry {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
-            position: relative;
-        }
-        .number-entry .input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 6px;
-        }
-        .number-entry .input-row label {
-            font-weight: 600;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        .number-entry .input-row input {
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid #d1d5db;
-            font-size: 0.9rem;
-            width: 100%;
-            box-sizing: border-box;
-            background: white;
-        }
-        .number-entry .input-row input:focus {
-            border-color: #818cf8;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
-        }
-        .number-entry .delete-btn {
-            background: transparent;
-            border: 1px solid #ef4444;
-            color: #ef4444;
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.2s;
-            position: absolute;
-            top: 8px;
-            right: 8px;
-        }
-        .number-entry .delete-btn:hover {
-            background: #ef4444;
-            color: white;
-        }
-        .add-btn {
-            background: transparent;
-            border: 2px dashed #4f46e5;
-            color: #4f46e5;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-            font-size: 0.85rem;
-            margin-top: 4px;
-        }
-        .add-btn:hover {
-            background: #4f46e5;
-            color: white;
-            border: 2px solid #4f46e5;
-        }
-        .badge-count {
-            background: #e2e8f0;
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            color: #475569;
-            font-weight: 700;
-        }
-        .preview-box {
-            background: #f1f5f9;
-            border-radius: 12px;
-            padding: 12px;
-            margin: 6px 0;
-            border: 1px dashed #4f46e5;
-        }
+        #notificationModal .modal-box { background: white; border-radius: 20px; max-width: 480px; width: 100%; padding: 28px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25); border-top: 5px solid #4f46e5; }
+        .loader { border: 3px solid #e2e8f0; border-top: 3px solid #4f46e5; border-radius: 50%; width: 32px; height: 32px; animation: spin 0.8s linear infinite; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .number-entry { background: #f8fafc; border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid #e2e8f0; position: relative; }
+        .number-entry .input-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+        .number-entry .input-row label { font-weight: 600; font-size: 0.75rem; color: #64748b; }
+        .number-entry .input-row input { padding: 8px 12px; border-radius: 10px; border: 1px solid #d1d5db; font-size: 0.9rem; width: 100%; box-sizing: border-box; background: white; }
+        .number-entry .input-row input:focus { border-color: #818cf8; outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.2); }
+        .number-entry .delete-btn { background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 2px 12px; border-radius: 30px; font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; position: absolute; top: 8px; right: 8px; }
+        .number-entry .delete-btn:hover { background: #ef4444; color: white; }
+        .add-btn { background: transparent; border: 2px dashed #4f46e5; color: #4f46e5; padding: 8px 16px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; font-size: 0.85rem; margin-top: 4px; }
+        .add-btn:hover { background: #4f46e5; color: white; border: 2px solid #4f46e5; }
+        .badge-count { background: #e2e8f0; padding: 2px 12px; border-radius: 30px; font-size: 0.7rem; color: #475569; font-weight: 700; }
+        .preview-box { background: #f1f5f9; border-radius: 12px; padding: 12px; margin: 6px 0; border: 1px dashed #4f46e5; }
         .preview-box strong { color: #4f46e5; }
-        .copy-preview {
-            background: white;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: #64748b;
-            word-break: break-all;
-            margin-top: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        /* ===== Status Colors ===== */
+        .copy-preview { background: white; padding: 4px 12px; border-radius: 8px; font-size: 0.8rem; color: #64748b; word-break: break-all; margin-top: 4px; border: 1px solid #e2e8f0; }
         .status-completed { color: #10b981; }
         .status-pending { color: #f59e0b; }
         .status-rejected { color: #ef4444; }
-        
-        /* ===== Table row hover ===== */
         .table-row-hover:hover { background: #f8fafc; }
-
-        /* Block button styles */
-        .block-btn {
-            background: #ef4444;
+        .block-btn { background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.65rem; cursor: pointer; transition: 0.2s; }
+        .block-btn:hover { background: #dc2626; }
+        .block-btn.unblock { background: #22c55e; }
+        .block-btn.unblock:hover { background: #16a34a; }
+        
+        /* 🎯 NEW: Withdraw Number Edit Styles */
+        .wd-num-input {
+            border: 2px solid #a5b4fc;
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: 13px;
+            font-family: monospace;
+            font-weight: 700;
+            color: #3730a3;
+            width: 145px;
+            background: #eef2ff;
+            transition: all 0.2s;
+        }
+        .wd-num-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+            background: white;
+        }
+        .wd-num-input.changed {
+            border-color: #f59e0b;
+            background: #fef3c7;
+        }
+        .save-num-btn {
+            background: #4f46e5;
             color: white;
             border: none;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 0.65rem;
+            font-size: 11px;
             cursor: pointer;
             transition: 0.2s;
+            white-space: nowrap;
         }
-        .block-btn:hover { background: #dc2626; }
-        .block-btn.unblock {
-            background: #22c55e;
-        }
-        .block-btn.unblock:hover { background: #16a34a; }
+        .save-num-btn:hover { background: #4338ca; }
+        .save-num-btn:active { transform: scale(0.95); }
+        .save-num-btn.saved { background: #10b981; }
     </style>
 </head>
 <body>
 
-    <!-- ===== MAIN CONTENT ===== -->
     <div id="mainContent" style="display:block;">
         <div class="flex flex-col md:flex-row">
-
-            <!-- Sidebar Overlay (mobile) -->
             <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-            <!-- Sidebar -->
+            <!-- ========== SIDEBAR ========== -->
             <nav class="sidebar" id="sidebar">
                 <div class="sidebar-brand">
                     <h2><i class="fas fa-bolt"></i> Trust Wallet</h2>
                     <span>Admin Panel v3.0</span>
                 </div>
                 <div class="py-2">
-                    <button class="nav-btn active" data-page="dashboard" onclick="navigateTo('dashboard')">
-                        <i class="fas fa-chart-pie"></i> Dashboard
-                    </button>
-                    <button class="nav-btn" data-page="search" onclick="navigateTo('search')">
-                        <i class="fas fa-search"></i> Search User
-                    </button>
-                    <button class="nav-btn" data-page="message" onclick="navigateTo('message')">
-                        <i class="fas fa-envelope"></i> Personal Message
-                    </button>
-                    <button class="nav-btn" data-page="deposit-settings" onclick="navigateTo('deposit-settings')">
-                        <i class="fas fa-university"></i> Deposit Settings
-                    </button>
-                    <button class="nav-btn" data-page="refer-video" onclick="navigateTo('refer-video')">
-                        <i class="fas fa-video"></i> Refer Video
-                    </button>
-                    <button class="nav-btn" data-page="total-user" onclick="navigateTo('total-user')">
-                        <i class="fas fa-users-cog"></i> User Count
-                    </button>
-                    <button class="nav-btn" data-page="gift" onclick="navigateTo('gift')">
-                        <i class="fas fa-gift"></i> Gift Codes
-                    </button>
-                    <button class="nav-btn" data-page="deposits" onclick="navigateTo('deposits')">
-                        <i class="fas fa-arrow-down"></i> Pending Deposits
-                        <span class="badge" id="depositBadge">0</span>
-                    </button>
-                    <button class="nav-btn" data-page="withdraws" onclick="navigateTo('withdraws')">
-                        <i class="fas fa-arrow-up"></i> Pending Withdraws
-                        <span class="badge" id="withdrawBadge">0</span>
-                    </button>
-                    <button class="nav-btn" data-page="users" onclick="navigateTo('users')">
-                        <i class="fas fa-list-ul"></i> Users (Last 30)
-                    </button>
-                    <button class="nav-btn" data-page="blocked-users" onclick="navigateTo('blocked-users')">
-                        <i class="fas fa-ban"></i> Blocked Users
-                        <span class="badge" id="blockedBadge">0</span>
-                    </button>
-                    <button class="nav-btn" data-page="notifications" onclick="navigateTo('notifications')">
-                        <i class="fas fa-bullhorn"></i> Broadcast
-                    </button>
-                    <button class="nav-btn" data-page="admin-notices" onclick="navigateTo('admin-notices')">
-                        <i class="fas fa-sticky-note"></i> Admin Notices
-                    </button>
-                    <button class="nav-btn" data-page="game-stats" onclick="navigateTo('game-stats')">
-                        <i class="fas fa-gamepad"></i> Game Stats
-                        <span class="badge" id="gameStatsBadge">0</span>
-                    </button>
+                    <button class="nav-btn active" data-page="dashboard" onclick="navigateTo('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</button>
+                    <button class="nav-btn" data-page="search" onclick="navigateTo('search')"><i class="fas fa-search"></i> Search User</button>
+                    <button class="nav-btn" data-page="message" onclick="navigateTo('message')"><i class="fas fa-envelope"></i> Personal Message</button>
+                    <button class="nav-btn" data-page="deposit-settings" onclick="navigateTo('deposit-settings')"><i class="fas fa-university"></i> Deposit Settings</button>
+                    <button class="nav-btn" data-page="refer-video" onclick="navigateTo('refer-video')"><i class="fas fa-video"></i> Refer Video</button>
+                    <button class="nav-btn" data-page="total-user" onclick="navigateTo('total-user')"><i class="fas fa-users-cog"></i> User Count</button>
+                    <button class="nav-btn" data-page="gift" onclick="navigateTo('gift')"><i class="fas fa-gift"></i> Gift Codes</button>
+                    <button class="nav-btn" data-page="deposits" onclick="navigateTo('deposits')"><i class="fas fa-arrow-down"></i> Pending Deposits <span class="badge" id="depositBadge">0</span></button>
+                    <button class="nav-btn" data-page="withdraws" onclick="navigateTo('withdraws')"><i class="fas fa-arrow-up"></i> Pending Withdraws <span class="badge" id="withdrawBadge">0</span></button>
+                    <button class="nav-btn" data-page="users" onclick="navigateTo('users')"><i class="fas fa-list-ul"></i> Users (Last 30)</button>
+                    <button class="nav-btn" data-page="blocked-users" onclick="navigateTo('blocked-users')"><i class="fas fa-ban"></i> Blocked Users <span class="badge" id="blockedBadge">0</span></button>
+                    <button class="nav-btn" data-page="notifications" onclick="navigateTo('notifications')"><i class="fas fa-bullhorn"></i> Broadcast</button>
+                    <button class="nav-btn" data-page="admin-notices" onclick="navigateTo('admin-notices')"><i class="fas fa-sticky-note"></i> Admin Notices</button>
+                    <button class="nav-btn" data-page="game-stats" onclick="navigateTo('game-stats')"><i class="fas fa-gamepad"></i> Game Stats <span class="badge" id="gameStatsBadge">0</span></button>
                 </div>
                 <div class="mt-auto p-4 border-t border-[#1e293b] text-xs text-[#64748b] flex items-center gap-2">
                     <i class="fas fa-circle text-green-400 text-[8px]"></i> Live Connected
                 </div>
             </nav>
 
-            <!-- Content Area -->
+            <!-- ========== CONTENT AREA ========== -->
             <div class="content-area">
-                <!-- Mobile hamburger -->
                 <div class="flex items-center gap-3 mb-5 md:hidden">
-                    <button class="hamburger" onclick="toggleSidebar()">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
                     <span class="font-bold text-indigo-600 text-lg">Trust Wallet Admin</span>
                 </div>
 
-                <!-- ========== PAGE: DASHBOARD ========== -->
+                <!-- ========== DASHBOARD ========== -->
                 <div id="page-dashboard" class="page-section active">
-                    <div class="section-header">
-                        <i class="fas fa-chart-pie"></i>
-                        <h2>Dashboard Overview</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-chart-pie"></i><h2>Dashboard Overview</h2></div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-blue-500">
-                            <p class="text-xs font-bold text-gray-500 uppercase">Total Users</p>
-                            <p class="text-2xl font-extrabold text-blue-600 mt-1" id="statTotalUsers">0</p>
-                        </div>
-                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-green-500">
-                            <p class="text-xs font-bold text-gray-500 uppercase">System Balance</p>
-                            <p class="text-2xl font-extrabold text-green-600 mt-1" id="statSystemBalance">৳0.00</p>
-                        </div>
-                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-pink-500">
-                            <p class="text-xs font-bold text-gray-500 uppercase">Pending Deposits</p>
-                            <p class="text-2xl font-extrabold text-pink-600 mt-1" id="statPendingDeposits">0</p>
-                        </div>
-                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-orange-500">
-                            <p class="text-xs font-bold text-gray-500 uppercase">Pending Withdraws</p>
-                            <p class="text-2xl font-extrabold text-orange-600 mt-1" id="statPendingWithdraws">0</p>
-                        </div>
+                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-blue-500"><p class="text-xs font-bold text-gray-500 uppercase">Total Users</p><p class="text-2xl font-extrabold text-blue-600 mt-1" id="statTotalUsers">0</p></div>
+                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-green-500"><p class="text-xs font-bold text-gray-500 uppercase">System Balance</p><p class="text-2xl font-extrabold text-green-600 mt-1" id="statSystemBalance">৳0.00</p></div>
+                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-pink-500"><p class="text-xs font-bold text-gray-500 uppercase">Pending Deposits</p><p class="text-2xl font-extrabold text-pink-600 mt-1" id="statPendingDeposits">0</p></div>
+                        <div class="stat-card bg-white p-5 shadow-sm border-l-4 border-orange-500"><p class="text-xs font-bold text-gray-500 uppercase">Pending Withdraws</p><p class="text-2xl font-extrabold text-orange-600 mt-1" id="statPendingWithdraws">0</p></div>
                     </div>
                     <div class="mt-6 bg-white p-6 rounded-2xl shadow-sm">
                         <p class="text-sm text-gray-500"><i class="fas fa-info-circle text-indigo-500 mr-2"></i> Use the sidebar to navigate. Users list shows only the latest 30 accounts.</p>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: SEARCH USER ========== -->
+                <!-- ========== SEARCH USER ========== -->
                 <div id="page-search" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-search"></i>
-                        <h2>Search User (UID / Login ID)</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-search"></i><h2>Search User (UID / Login ID)</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
                         <div class="flex flex-col md:flex-row gap-4 mb-4">
                             <input type="text" id="searchUidInput" class="flex-1 p-3 border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200" placeholder="Enter User ID or Phone Number">
@@ -502,84 +188,52 @@
                     </div>
                 </div>
 
-                <!-- ========== PAGE: PERSONAL MESSAGE ========== -->
+                <!-- ========== PERSONAL MESSAGE ========== -->
                 <div id="page-message" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-envelope"></i>
-                        <h2>Personal Message to User</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-envelope"></i><h2>Personal Message to User</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
                         <p class="text-sm text-gray-500 mb-4">Send a direct message to a user using their UID</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600">User UID</label>
-                                <input type="text" id="pmUserId" class="mt-1 block w-full p-3 border rounded-xl text-sm font-mono focus:ring-2 focus:ring-red-200" placeholder="e.g., USR123456">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600">Message Title</label>
-                                <input type="text" id="pmTitle" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-red-200" placeholder="e.g., Important Update">
-                            </div>
+                            <div><label class="block text-xs font-semibold text-gray-600">User UID</label><input type="text" id="pmUserId" class="mt-1 block w-full p-3 border rounded-xl text-sm font-mono focus:ring-2 focus:ring-red-200" placeholder="e.g., USR123456"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600">Message Title</label><input type="text" id="pmTitle" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-red-200" placeholder="e.g., Important Update"></div>
                         </div>
-                        <div class="mt-3">
-                            <label class="block text-xs font-semibold text-gray-600">Message Body</label>
-                            <textarea id="pmBody" rows="3" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-red-200" placeholder="Write your message here..."></textarea>
-                        </div>
+                        <div class="mt-3"><label class="block text-xs font-semibold text-gray-600">Message Body</label><textarea id="pmBody" rows="3" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-red-200" placeholder="Write your message here..."></textarea></div>
                         <button onclick="sendPersonalMessage()" class="mt-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-xl font-bold text-sm btn shadow-md hover:shadow-lg w-full md:w-auto">📨 Send Message</button>
                         <div id="pmStatus" class="mt-2 text-sm font-semibold"></div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: DEPOSIT SETTINGS ========== -->
+                <!-- ========== DEPOSIT SETTINGS ========== -->
                 <div id="page-deposit-settings" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-university"></i>
-                        <h2>Deposit Methods (bKash & Nagad)</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-university"></i><h2>Deposit Methods (bKash & Nagad)</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">📌 bKash ও Nagad এর জন্য যত খুশি নাম্বার যোগ/বিয়োগ করুন। প্রতিটি নাম্বারের আলাদা টাইটেল ও ইন্সট্রাকশন সেট করুন।</p>
-                        
+                        <p class="text-sm text-gray-500 mb-4">📌 bKash ও Nagad এর জন্য যত খুশি নাম্বার যোগ/বিয়োগ করুন।</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- bKash -->
                             <div class="bg-gradient-to-br from-pink-50 to-pink-100 p-5 rounded-2xl border border-pink-200">
-                                <div class="flex justify-between items-center mb-3">
-                                    <h3 class="font-bold text-pink-700 text-lg">💳 bKash</h3>
-                                    <span class="badge-count" id="bkashCount">০টি নাম্বার</span>
-                                </div>
+                                <div class="flex justify-between items-center mb-3"><h3 class="font-bold text-pink-700 text-lg">💳 bKash</h3><span class="badge-count" id="bkashCount">০টি নাম্বার</span></div>
                                 <div id="bkashEntries"></div>
                                 <button class="add-btn" onclick="addEntry('bKash')">➕ bKash এ নতুন নাম্বার যোগ করুন</button>
                             </div>
-                            
-                            <!-- Nagad -->
                             <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-5 rounded-2xl border border-orange-200">
-                                <div class="flex justify-between items-center mb-3">
-                                    <h3 class="font-bold text-orange-700 text-lg">📱 Nagad</h3>
-                                    <span class="badge-count" id="nagadCount">০টি নাম্বার</span>
-                                </div>
+                                <div class="flex justify-between items-center mb-3"><h3 class="font-bold text-orange-700 text-lg">📱 Nagad</h3><span class="badge-count" id="nagadCount">০টি নাম্বার</span></div>
                                 <div id="nagadEntries"></div>
                                 <button class="add-btn" onclick="addEntry('Nagad')">➕ Nagad এ নতুন নাম্বার যোগ করুন</button>
                             </div>
                         </div>
-                        
                         <button onclick="saveDepositSettings()" class="mt-5 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-bold text-sm btn shadow-md hover:shadow-lg w-full md:w-auto">💾 Save Settings</button>
                         <div id="depositStatus" class="mt-2 text-sm font-semibold"></div>
-                        
-                        <!-- Preview -->
                         <div style="margin-top: 24px; background: #f1f5f9; border-radius: 16px; padding: 16px; border: 1px solid #e2e8f0;">
                             <h4 style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">📌 প্রিভিউ (ইউজার ডিপোজিট পেজ)</h4>
                             <div id="previewContainer"></div>
-                            <p class="text-xs text-gray-400 mt-2">* নাম্বার যোগ/বিয়োগ করলেই প্রিভিউ আপডেট হবে।</p>
+                            <p class="text-xs text-gray-400 mt-2">* নাম্বার যোগ/বিয়োগ করলেই প্রিভিউ আপডেট হবে।</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: REFER VIDEO ========== -->
+                <!-- ========== REFER VIDEO ========== -->
                 <div id="page-refer-video" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-video"></i>
-                        <h2>Refer Page Video Settings</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-video"></i><h2>Refer Page Video Settings</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">Set titles and links for the two video boxes on the Refer page</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-2xl border border-blue-200 space-y-3">
                                 <h3 class="font-bold text-blue-700 text-sm border-b border-blue-200 pb-2">📹 Box 1</h3>
@@ -596,38 +250,26 @@
                     </div>
                 </div>
 
-                <!-- ========== PAGE: TOTAL USER COUNT ========== -->
+                <!-- ========== TOTAL USER ========== -->
                 <div id="page-total-user" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-users-cog"></i>
-                        <h2>Total User Count Settings</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-users-cog"></i><h2>Total User Count Settings</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">Control how many users are shown in the "Total Users" box on the Refer page</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600">Status</label>
+                            <div><label class="block text-xs font-semibold text-gray-600">Status</label>
                                 <select id="totalUserStatus" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-300">
                                     <option value="on">🟢 On (Show)</option>
                                     <option value="off">🔴 Off (Hide)</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600">🔢 Offset (Add/Subtract)</label>
-                                <input type="number" id="totalUserOffset" class="mt-1 block w-full p-3 border rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-300" placeholder="e.g., 50 or -20" value="0">
-                                <p class="text-[10px] text-gray-400 mt-1">+ increases, - decreases the count</p>
-                            </div>
+                            <div><label class="block text-xs font-semibold text-gray-600">🔢 Offset</label><input type="number" id="totalUserOffset" class="mt-1 block w-full p-3 border rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-300" placeholder="e.g., 50 or -20" value="0"></div>
                         </div>
                         <button onclick="saveTotalUserSettings()" class="mt-5 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-bold text-sm btn shadow-md hover:shadow-lg w-full md:w-auto">💾 Save</button>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: GIFT CODES ========== -->
+                <!-- ========== GIFT CODES ========== -->
                 <div id="page-gift" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-gift"></i>
-                        <h2>Gift Code Generator & Control</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-gift"></i><h2>Gift Code Generator & Control</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div><label class="block text-xs font-semibold text-gray-600">Code</label><input type="text" id="giftCodeInput" class="mt-1 block w-full p-3 border rounded-xl text-sm font-bold uppercase focus:ring-2 focus:ring-yellow-300" placeholder="e.g., FREE50"></div>
@@ -647,12 +289,9 @@
                     </div>
                 </div>
 
-                <!-- ========== PAGE: PENDING DEPOSITS ========== -->
+                <!-- ========== PENDING DEPOSITS ========== -->
                 <div id="page-deposits" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-arrow-down"></i>
-                        <h2>Pending Deposit Verification</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-arrow-down"></i><h2>Pending Deposit Verification</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
                         <div class="table-wrap">
                             <table class="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
@@ -663,30 +302,33 @@
                     </div>
                 </div>
 
-                <!-- ========== PAGE: PENDING WITHDRAWS ========== -->
+                <!-- ========== PENDING WITHDRAWS (with editable number) ========== -->
                 <div id="page-withdraws" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-arrow-up"></i>
-                        <h2>Pending Withdraw Verification</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-arrow-up"></i><h2>Pending Withdraw Verification</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
+                        <div class="mb-4 p-3 bg-indigo-50 border-l-4 border-indigo-500 rounded-lg">
+                            <p class="text-xs text-indigo-700 font-semibold">💡 <b>নাম্বার চেঞ্জ:</b> Payment Number বক্সে নতুন নাম্বার লিখে <b>💾 Save</b> চাপুন — ইউজারের অ্যাপেও সাথে সাথে আপডেট হবে।</p>
+                        </div>
                         <div class="table-wrap">
                             <table class="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
-                                <thead><tr class="bg-gray-200 text-gray-600 uppercase text-xs"><th class="py-3 px-4 text-left">User</th><th class="py-3 px-4 text-left">Method</th><th class="py-3 px-4 text-left">Amount</th><th class="py-3 px-4 text-left">Number</th><th class="py-3 px-4 text-left">Time</th><th class="py-3 px-4 text-center">Action</th></tr></thead>
+                                <thead><tr class="bg-gray-200 text-gray-600 uppercase text-xs">
+                                    <th class="py-3 px-4 text-left">User</th>
+                                    <th class="py-3 px-4 text-left">Method</th>
+                                    <th class="py-3 px-4 text-left">Amount</th>
+                                    <th class="py-3 px-4 text-left">Payment Number (Editable)</th>
+                                    <th class="py-3 px-4 text-left">Time</th>
+                                    <th class="py-3 px-4 text-center">Action</th>
+                                </tr></thead>
                                 <tbody id="withdrawTableBody" class="text-gray-600 text-sm"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: USERS LIST (Last 30) with Block/Unblock ========== -->
+                <!-- ========== USERS LIST ========== -->
                 <div id="page-users" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-list-ul"></i>
-                        <h2>Latest 30 Users</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-list-ul"></i><h2>Latest 30 Users</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">📋 সর্বশেষ ৩০ জন ইউজারের তালিকা – ব্লক/আনব্লক করতে পারেন</p>
                         <div class="table-wrap">
                             <table class="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
                                 <thead><tr class="bg-gray-200 text-gray-600 uppercase text-xs">
@@ -698,22 +340,16 @@
                                     <th class="py-3 px-4 text-left">Nagad</th>
                                     <th class="py-3 px-4 text-center">Action</th>
                                 </tr></thead>
-                                <tbody id="usersTableBody" class="text-gray-600 text-sm">
-                                    <tr><td colspan="7" class="text-center py-5 text-gray-400">Loading latest 30 users...</td></tr>
-                                </tbody>
+                                <tbody id="usersTableBody" class="text-gray-600 text-sm"><tr><td colspan="7" class="text-center py-5 text-gray-400">Loading latest 30 users...</td></tr></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: BLOCKED USERS ========== -->
+                <!-- ========== BLOCKED USERS ========== -->
                 <div id="page-blocked-users" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-ban"></i>
-                        <h2>Blocked Users</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-ban"></i><h2>Blocked Users</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">🚫 সকল ব্লক করা ইউজারের তালিকা। এখান থেকে আনব্লক করতে পারেন।</p>
                         <div class="table-wrap">
                             <table class="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
                                 <thead><tr class="bg-gray-200 text-gray-600 uppercase text-xs">
@@ -724,22 +360,16 @@
                                     <th class="py-3 px-4 text-left">Blocked At</th>
                                     <th class="py-3 px-4 text-center">Action</th>
                                 </tr></thead>
-                                <tbody id="blockedUsersTableBody" class="text-gray-600 text-sm">
-                                    <tr><td colspan="6" class="text-center py-5 text-gray-400">Loading blocked users...</td></tr>
-                                </tbody>
+                                <tbody id="blockedUsersTableBody" class="text-gray-600 text-sm"><tr><td colspan="6" class="text-center py-5 text-gray-400">Loading blocked users...</td></tr></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: BROADCAST NOTIFICATIONS ========== -->
+                <!-- ========== BROADCAST ========== -->
                 <div id="page-notifications" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-bullhorn"></i>
-                        <h2>Broadcast Notification</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-bullhorn"></i><h2>Broadcast Notification</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">📢 সব ইউজারের কাছে পপ-আপ নোটিফিকেশন পাঠান</p>
                         <div class="space-y-4">
                             <div><label class="block text-sm font-medium text-gray-700">Title</label><input type="text" id="notifTitle" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-300"></div>
                             <div><label class="block text-sm font-medium text-gray-700">Message</label><textarea id="notifBody" rows="3" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-300"></textarea></div>
@@ -748,101 +378,55 @@
                     </div>
                 </div>
 
-                <!-- ========== PAGE: ADMIN NOTICES ========== -->
+                <!-- ========== ADMIN NOTICES ========== -->
                 <div id="page-admin-notices" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-sticky-note"></i>
-                        <h2>Admin Notices (পোস্ট করুন)</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-sticky-note"></i><h2>Admin Notices</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
-                        <p class="text-sm text-gray-500 mb-4">📌 এখানে নোটিশ লিখুন যা ইউজার অ্যাপের "নোটিশ" বাটনে দেখাবে।</p>
                         <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Title</label>
-                                <input type="text" id="adminNoticeTitle" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-yellow-300" placeholder="e.g., Important Update">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Body</label>
-                                <textarea id="adminNoticeBody" rows="4" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-yellow-300" placeholder="Write notice details..."></textarea>
-                            </div>
+                            <div><label class="block text-sm font-medium text-gray-700">Title</label><input type="text" id="adminNoticeTitle" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-yellow-300" placeholder="e.g., Important Update"></div>
+                            <div><label class="block text-sm font-medium text-gray-700">Body</label><textarea id="adminNoticeBody" rows="4" class="mt-1 block w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-yellow-300" placeholder="Write notice details..."></textarea></div>
                             <button onclick="postAdminNotice()" class="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-8 py-3 rounded-xl font-bold text-sm btn shadow-md hover:shadow-lg">📝 Post Notice</button>
                             <div id="noticeStatus" class="mt-2 text-sm font-semibold"></div>
                         </div>
                         <div class="mt-8">
                             <h3 class="font-bold text-gray-700 mb-3">📋 Previously Posted Notices</h3>
-                            <div id="adminNoticesList" class="space-y-2">
-                                <p class="text-sm text-gray-400">Loading notices...</p>
-                            </div>
+                            <div id="adminNoticesList" class="space-y-2"><p class="text-sm text-gray-400">Loading notices...</p></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PAGE: GAME STATS ========== -->
+                <!-- ========== GAME STATS ========== -->
                 <div id="page-game-stats" class="page-section">
-                    <div class="section-header">
-                        <i class="fas fa-gamepad"></i>
-                        <h2>🎰 Game Statistics (Spin History)</h2>
-                    </div>
+                    <div class="section-header"><i class="fas fa-gamepad"></i><h2>🎰 Game Statistics</h2></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl text-center border border-blue-200">
-                                <p class="text-xs font-bold text-blue-600">Total Spins</p>
-                                <p class="text-2xl font-extrabold text-blue-700" id="totalSpins">0</p>
-                            </div>
-                            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl text-center border border-green-200">
-                                <p class="text-xs font-bold text-green-600">Total Win (৳)</p>
-                                <p class="text-2xl font-extrabold text-green-700" id="totalWinAmount">0</p>
-                            </div>
-                            <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl text-center border border-red-200">
-                                <p class="text-xs font-bold text-red-600">Total Loss (৳)</p>
-                                <p class="text-2xl font-extrabold text-red-700" id="totalLossAmount">0</p>
-                            </div>
-                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl text-center border border-purple-200">
-                                <p class="text-xs font-bold text-purple-600">Win Rate</p>
-                                <p class="text-2xl font-extrabold text-purple-700" id="winRate">0%</p>
-                            </div>
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl text-center border border-blue-200"><p class="text-xs font-bold text-blue-600">Total Spins</p><p class="text-2xl font-extrabold text-blue-700" id="totalSpins">0</p></div>
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl text-center border border-green-200"><p class="text-xs font-bold text-green-600">Total Win (৳)</p><p class="text-2xl font-extrabold text-green-700" id="totalWinAmount">0</p></div>
+                            <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl text-center border border-red-200"><p class="text-xs font-bold text-red-600">Total Loss (৳)</p><p class="text-2xl font-extrabold text-red-700" id="totalLossAmount">0</p></div>
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl text-center border border-purple-200"><p class="text-xs font-bold text-purple-600">Win Rate</p><p class="text-2xl font-extrabold text-purple-700" id="winRate">0%</p></div>
                         </div>
-                        
                         <div class="table-wrap">
                             <table class="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
-                                <thead>
-                                    <tr class="bg-gray-200 text-gray-600 uppercase text-xs">
-                                        <th class="py-3 px-4 text-left">User</th>
-                                        <th class="py-3 px-4 text-left">Bet (৳)</th>
-                                        <th class="py-3 px-4 text-left">Win (৳)</th>
-                                        <th class="py-3 px-4 text-left">Result</th>
-                                        <th class="py-3 px-4 text-left">Time</th>
-                                        <th class="py-3 px-4 text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="gameStatsTableBody" class="text-gray-600 text-sm">
-                                    <tr><td colspan="6" class="text-center py-5 text-gray-400">Loading game stats...</td></tr>
-                                </tbody>
+                                <thead><tr class="bg-gray-200 text-gray-600 uppercase text-xs"><th class="py-3 px-4 text-left">User</th><th class="py-3 px-4 text-left">Bet (৳)</th><th class="py-3 px-4 text-left">Win (৳)</th><th class="py-3 px-4 text-left">Result</th><th class="py-3 px-4 text-left">Time</th><th class="py-3 px-4 text-center">Status</th></tr></thead>
+                                <tbody id="gameStatsTableBody" class="text-gray-600 text-sm"><tr><td colspan="6" class="text-center py-5 text-gray-400">Loading game stats...</td></tr></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-            </div><!-- /content-area -->
-        </div><!-- /flex -->
+            </div>
+        </div>
 
         <!-- ===== NOTIFICATION MODAL ===== -->
         <div id="notificationModal">
             <div class="modal-box">
-                <div class="flex justify-between items-center border-b pb-3">
-                    <h3 id="modalNotifTitle" class="text-lg font-bold text-gray-800">Notification</h3>
-                </div>
+                <div class="flex justify-between items-center border-b pb-3"><h3 id="modalNotifTitle" class="text-lg font-bold text-gray-800">Notification</h3></div>
                 <p id="modalNotifBody" class="text-sm text-gray-600 whitespace-pre-line mt-4"></p>
-                <div class="flex justify-end pt-4">
-                    <button onclick="closeNotificationModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-sm font-bold btn">OK</button>
-                </div>
+                <div class="flex justify-end pt-4"><button onclick="closeNotificationModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-sm font-bold btn">OK</button></div>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- ======================== JAVASCRIPT ========================= -->
-    <!-- ============================================================ -->
     <script>
         // ==================== FIREBASE ====================
         const firebaseConfig = {
@@ -862,17 +446,17 @@
 
         function getFormattedServerTime() {
             return new Date().toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
             });
         }
 
-        // ==================== SIDEBAR NAVIGATION ====================
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // ==================== NAVIGATION ====================
         function navigateTo(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             const target = document.getElementById('page-' + pageId);
@@ -891,10 +475,8 @@
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
         }
 
         // ==================== STATS ====================
@@ -917,16 +499,14 @@
                 document.getElementById('statPendingWithdraws').innerText = p;
                 document.getElementById('withdrawBadge').innerText = p;
             });
-            // Blocked users count
             db.ref('blocked_users').on('value', (snap) => {
                 let count = snap.exists() ? snap.numChildren() : 0;
                 document.getElementById('blockedBadge').innerText = count;
             });
         }
 
-        // ==================== SEARCH USER (with Block/Unblock) ====================
+        // ==================== SEARCH USER ====================
         let currentSearchedUserKey = null;
-        let currentSearchedUserLoginId = null;
 
         function searchUserByUid() {
             const q = document.getElementById('searchUidInput').value.trim();
@@ -942,11 +522,8 @@
                 const div = document.getElementById('userSearchResult');
                 if (found && key) {
                     currentSearchedUserKey = key;
-                    currentSearchedUserLoginId = found.loginId;
-                    // Check if blocked
                     db.ref('blocked_users/' + sanitizeKey(found.loginId)).once('value', (blockSnap) => {
                         const isBlocked = blockSnap.exists() && blockSnap.val().blocked === true;
-                        const blockReason = blockSnap.val()?.reason || 'Terms Violation';
                         const blockBtnHtml = isBlocked ?
                             `<button class="block-btn unblock" onclick="toggleBlockUserFromSearch('${found.loginId}', false)">Unblock</button>` :
                             `<button class="block-btn" onclick="toggleBlockUserFromSearch('${found.loginId}', true)">Block</button>`;
@@ -981,29 +558,19 @@
             });
         }
 
-        // Block/Unblock from search result
         function toggleBlockUserFromSearch(loginId, block) {
             const safeKey = sanitizeKey(loginId);
             if (block) {
                 const reason = prompt('Enter block reason (optional):', 'Terms Violation');
                 if (reason === null) return;
                 db.ref('blocked_users/' + safeKey).set({
-                    blocked: true,
-                    reason: reason.trim() || 'Terms Violation',
-                    blockedAt: getFormattedServerTime()
-                }).then(() => {
-                    alert(`✅ User ${loginId} has been BLOCKED.`);
-                    searchUserByUid(); // refresh search result
-                    loadUsersList(); // refresh users list if open
-                    loadBlockedUsers();
-                }).catch(err => alert('Error: ' + err.message));
+                    blocked: true, reason: reason.trim() || 'Terms Violation', blockedAt: getFormattedServerTime()
+                }).then(() => { alert(`✅ User ${loginId} BLOCKED.`); searchUserByUid(); loadUsersList(); loadBlockedUsers(); })
+                .catch(err => alert('Error: ' + err.message));
             } else {
                 if (!confirm(`Unblock user ${loginId}?`)) return;
                 db.ref('blocked_users/' + safeKey).remove().then(() => {
-                    alert(`✅ User ${loginId} has been UNBLOCKED.`);
-                    searchUserByUid();
-                    loadUsersList();
-                    loadBlockedUsers();
+                    alert(`✅ User ${loginId} UNBLOCKED.`); searchUserByUid(); loadUsersList(); loadBlockedUsers();
                 }).catch(err => alert('Error: ' + err.message));
             }
         }
@@ -1059,18 +626,9 @@
                 html += `
                     <div class="number-entry" data-method="${method}" data-index="${index}">
                         <button class="delete-btn" onclick="deleteEntry('${method}', ${index})">✕ মুছুন</button>
-                        <div class="input-row">
-                            <label>📝 টাইটেল #${index+1}</label>
-                            <input type="text" class="entry-title" value="${escapeHtml(entry.title || '')}" placeholder="টাইটেল লিখুন">
-                        </div>
-                        <div class="input-row">
-                            <label>📱 নাম্বার #${index+1}</label>
-                            <input type="text" class="entry-number" value="${escapeHtml(entry.number || '')}" placeholder="01XXXXXXXXX">
-                        </div>
-                        <div class="input-row">
-                            <label>📄 ইন্সট্রাকশন #${index+1}</label>
-                            <input type="text" class="entry-instruction" value="${escapeHtml(entry.instruction || '')}" placeholder="ইন্সট্রাকশন লিখুন">
-                        </div>
+                        <div class="input-row"><label>📝 টাইটেল #${index+1}</label><input type="text" class="entry-title" value="${escapeHtml(entry.title || '')}" placeholder="টাইটেল লিখুন"></div>
+                        <div class="input-row"><label>📱 নাম্বার #${index+1}</label><input type="text" class="entry-number" value="${escapeHtml(entry.number || '')}" placeholder="01XXXXXXXXX"></div>
+                        <div class="input-row"><label>📄 ইন্সট্রাকশন #${index+1}</label><input type="text" class="entry-instruction" value="${escapeHtml(entry.instruction || '')}" placeholder="ইন্সট্রাকশন লিখুন"></div>
                     </div>
                 `;
             });
@@ -1093,11 +651,6 @@
             updatePreview();
         }
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
         function addEntry(method) {
             depositSettings[method].push(getDefaultEntry(method));
             renderEntries(method);
@@ -1117,39 +670,21 @@
         function updatePreview() {
             const container = document.getElementById('previewContainer');
             let html = '';
-
             if (depositSettings.bKash.length > 0) {
                 html += `<div class="preview-box"><strong>💳 bKash</strong>`;
                 depositSettings.bKash.forEach((entry, i) => {
-                    html += `
-                        <div style="margin-top:6px; padding:6px 10px; background:white; border-radius:8px; border:1px solid #e2e8f0;">
-                            <div><strong>#${i+1}:</strong> ${escapeHtml(entry.title || '')}</div>
-                            <div style="color:#0f172a; font-weight:700;">${escapeHtml(entry.number || '')}</div>
-                            <div class="copy-preview">${escapeHtml(entry.instruction || '')}</div>
-                        </div>
-                    `;
+                    html += `<div style="margin-top:6px; padding:6px 10px; background:white; border-radius:8px; border:1px solid #e2e8f0;"><div><strong>#${i+1}:</strong> ${escapeHtml(entry.title || '')}</div><div style="color:#0f172a; font-weight:700;">${escapeHtml(entry.number || '')}</div><div class="copy-preview">${escapeHtml(entry.instruction || '')}</div></div>`;
                 });
                 html += `</div>`;
             }
-
             if (depositSettings.Nagad.length > 0) {
                 html += `<div class="preview-box" style="border-color:#d97706;"><strong>📱 Nagad</strong>`;
                 depositSettings.Nagad.forEach((entry, i) => {
-                    html += `
-                        <div style="margin-top:6px; padding:6px 10px; background:white; border-radius:8px; border:1px solid #e2e8f0;">
-                            <div><strong>#${i+1}:</strong> ${escapeHtml(entry.title || '')}</div>
-                            <div style="color:#0f172a; font-weight:700;">${escapeHtml(entry.number || '')}</div>
-                            <div class="copy-preview">${escapeHtml(entry.instruction || '')}</div>
-                        </div>
-                    `;
+                    html += `<div style="margin-top:6px; padding:6px 10px; background:white; border-radius:8px; border:1px solid #e2e8f0;"><div><strong>#${i+1}:</strong> ${escapeHtml(entry.title || '')}</div><div style="color:#0f172a; font-weight:700;">${escapeHtml(entry.number || '')}</div><div class="copy-preview">${escapeHtml(entry.instruction || '')}</div></div>`;
                 });
                 html += `</div>`;
             }
-
-            if (!html) {
-                html = `<p class="text-sm text-gray-400">কোনো নাম্বার যোগ করা হয়নি।</p>`;
-            }
-
+            if (!html) html = `<p class="text-sm text-gray-400">কোনো নাম্বার যোগ করা হয়নি।</p>`;
             container.innerHTML = html;
         }
 
@@ -1178,13 +713,9 @@
         function saveDepositSettings() {
             collectDepositInputs();
             db.ref('admin_settings/deposit_methods').set({
-                bKash: depositSettings.bKash,
-                Nagad: depositSettings.Nagad
-            }).then(() => {
-                showDepositStatus('✅ সব সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!', false);
-            }).catch(err => {
-                showDepositStatus('❌ সংরক্ষণ ব্যর্থ: ' + err.message, true);
-            });
+                bKash: depositSettings.bKash, Nagad: depositSettings.Nagad
+            }).then(() => showDepositStatus('✅ সব সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!', false))
+            .catch(err => showDepositStatus('❌ সংরক্ষণ ব্যর্থ: ' + err.message, true));
         }
 
         function collectDepositInputs() {
@@ -1197,7 +728,6 @@
                     instruction: entry.querySelector('.entry-instruction')?.value || ''
                 });
             });
-
             const nagadEntries = document.querySelectorAll('#nagadEntries .number-entry');
             depositSettings.Nagad = [];
             nagadEntries.forEach(entry => {
@@ -1214,17 +744,14 @@
             db.ref('refer_settings').on('value', (s) => {
                 const d = s.val();
                 if (d) {
-                    if (d.box1) { document.getElementById('referBox1Title').value = d.box1.title || '';
-                        document.getElementById('referBox1Link').value = d.box1.link || ''; }
-                    if (d.box2) { document.getElementById('referBox2Title').value = d.box2.title || '';
-                        document.getElementById('referBox2Link').value = d.box2.link || ''; }
+                    if (d.box1) { document.getElementById('referBox1Title').value = d.box1.title || ''; document.getElementById('referBox1Link').value = d.box1.link || ''; }
+                    if (d.box2) { document.getElementById('referBox2Title').value = d.box2.title || ''; document.getElementById('referBox2Link').value = d.box2.link || ''; }
                 }
             });
         }
 
         function saveReferSettings() {
-            const l1 = document.getElementById('referBox1Link').value.trim(),
-                l2 = document.getElementById('referBox2Link').value.trim();
+            const l1 = document.getElementById('referBox1Link').value.trim(), l2 = document.getElementById('referBox2Link').value.trim();
             if (!l1 && !l2) { alert('Please provide at least one video link!'); return; }
             db.ref('refer_settings').set({
                 box1: { title: document.getElementById('referBox1Title').value.trim() || 'Watch how this app works', link: l1 || '#' },
@@ -1232,12 +759,11 @@
             }).then(() => alert('✅ Video settings saved!')).catch(err => alert('Error: ' + err.message));
         }
 
-        // ==================== TOTAL USER SETTINGS ====================
+        // ==================== TOTAL USER ====================
         function loadTotalUserSettings() {
             db.ref('refer_settings/totalUser').on('value', (s) => {
                 const d = s.val();
-                if (d) { document.getElementById('totalUserStatus').value = d.status || 'on';
-                    document.getElementById('totalUserOffset').value = d.offset || 0; }
+                if (d) { document.getElementById('totalUserStatus').value = d.status || 'on'; document.getElementById('totalUserOffset').value = d.offset || 0; }
             });
         }
 
@@ -1257,20 +783,17 @@
             if (!uid) { statusDiv.innerHTML = '<span class="text-red-500">❌ Please enter User UID!</span>'; return; }
             if (!title || !body) { statusDiv.innerHTML = '<span class="text-red-500">❌ Please enter both title and message!</span>'; return; }
             statusDiv.innerHTML = '<span class="text-blue-500">⏳ Sending...</span>';
-            const btn = document.querySelector('[onclick="sendPersonalMessage()"]');
-            if (btn) btn.disabled = true;
             try {
                 const snap = await db.ref('users').once('value');
                 let key = null, user = null;
                 if (snap.exists()) { snap.forEach(c => { const u = c.val(); if (u.userId === uid) { key = c.key; user = u; } }); }
-                if (!key) { statusDiv.innerHTML = '<span class="text-red-500">❌ User not found with this UID!</span>'; if (btn) btn.disabled = false; return; }
-                await db.ref('user_messages/' + key).push({ title, body, from: 'Admin', timestamp: Date.now(),
-                    time: getFormattedServerTime(), read: false });
+                if (!key) { statusDiv.innerHTML = '<span class="text-red-500">❌ User not found with this UID!</span>'; return; }
+                await db.ref('user_messages/' + key).push({ title, body, from: 'Admin', timestamp: Date.now(), time: getFormattedServerTime(), read: false });
                 statusDiv.innerHTML = `<span class="text-green-500">✅ Message sent to ${user?.nick || key}!</span>`;
                 document.getElementById('pmUserId').value = '';
                 document.getElementById('pmTitle').value = '';
                 document.getElementById('pmBody').value = '';
-            } catch (err) { statusDiv.innerHTML = `<span class="text-red-500">❌ Error: ${err.message}</span>`; } finally { if (btn) btn.disabled = false; }
+            } catch (err) { statusDiv.innerHTML = `<span class="text-red-500">❌ Error: ${err.message}</span>`; }
         }
 
         // ==================== GIFT CODES ====================
@@ -1279,13 +802,13 @@
             const amt = parseFloat(document.getElementById('giftAmountInput').value);
             const max = parseInt(document.getElementById('giftMaxUsesInput').value);
             if (!code || isNaN(amt) || amt <= 0 || isNaN(max) || max <= 0) { alert('Please fill all fields correctly!'); return; }
-            db.ref('gift_codes/' + sanitizeKey(code)).set({ amount: amt, maxUses: max, totalUsed: 0, usedBy: {},
-                originalCode: code }).then(() => {
-                alert(`✅ Gift code "${code}" created!`);
-                document.getElementById('giftCodeInput').value = '';
-                document.getElementById('giftAmountInput').value = '';
-                document.getElementById('giftMaxUsesInput').value = '';
-            }).catch(err => alert('Error: ' + err.message));
+            db.ref('gift_codes/' + sanitizeKey(code)).set({ amount: amt, maxUses: max, totalUsed: 0, usedBy: {}, originalCode: code })
+                .then(() => {
+                    alert(`✅ Gift code "${code}" created!`);
+                    document.getElementById('giftCodeInput').value = '';
+                    document.getElementById('giftAmountInput').value = '';
+                    document.getElementById('giftMaxUsesInput').value = '';
+                }).catch(err => alert('Error: ' + err.message));
         }
 
         function loadGiftCodes() {
@@ -1294,16 +817,7 @@
                 tbody.innerHTML = '';
                 let has = false;
                 if (s.exists()) { s.forEach(c => { has = true; const d = c.val();
-                        tbody.innerHTML += `
-                            <tr class="border-b hover:bg-gray-50 text-xs md:text-sm">
-                                <td class="py-2.5 px-4 font-mono font-bold text-gray-800">${d.originalCode || c.key}</td>
-                                <td class="py-2.5 px-4 font-bold text-green-600">৳${Number(d.amount || 0).toFixed(2)}</td>
-                                <td class="py-2.5 px-4 font-semibold text-indigo-600">${d.totalUsed || 0} / ${d.maxUses || 1}</td>
-                                <td class="py-2.5 px-4 text-center">
-                                    <button onclick="deleteGiftCode('${c.key}')" class="bg-red-500 hover:bg-red-600 text-white text-[10px] md:text-xs px-2.5 py-1 rounded font-bold btn">Delete</button>
-                                </td>
-                            </tr>
-                        `; }); }
+                    tbody.innerHTML += `<tr class="border-b hover:bg-gray-50 text-xs md:text-sm"><td class="py-2.5 px-4 font-mono font-bold text-gray-800">${d.originalCode || c.key}</td><td class="py-2.5 px-4 font-bold text-green-600">৳${Number(d.amount || 0).toFixed(2)}</td><td class="py-2.5 px-4 font-semibold text-indigo-600">${d.totalUsed || 0} / ${d.maxUses || 1}</td><td class="py-2.5 px-4 text-center"><button onclick="deleteGiftCode('${c.key}')" class="bg-red-500 hover:bg-red-600 text-white text-[10px] md:text-xs px-2.5 py-1 rounded font-bold btn">Delete</button></td></tr>`; }); }
                 if (!has) tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-gray-400">No gift codes found</td></tr>`;
             });
         }
@@ -1319,23 +833,23 @@
             tbody.innerHTML = '';
             let has = false;
             if (s.exists()) { s.forEach(c => { const d = c.val(); if (d.status === 'Pending') { has = true;
-                        const badge = d.method === 'bKash' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700';
-                        tbody.innerHTML += `
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="py-3 px-4"><div class="font-bold text-gray-800">${d.nick || 'User'}</div>
-                                    <div class="text-xs text-indigo-600 font-mono font-bold">UID: ${d.userId || d.uid || 'N/A'}</div>
-                                    <div class="text-xs text-gray-500">${d.loginId}</div></td>
-                                <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs font-bold rounded ${badge}">${d.method}</span>
-                                    <div class="text-xs font-mono font-semibold text-gray-700 mt-1">${d.senderNumber}</div></td>
-                                <td class="py-3 px-4 font-bold text-green-600">৳${d.amount}</td>
-                                <td class="py-3 px-4 font-mono text-xs font-bold text-gray-800">${d.trxId}</td>
-                                <td class="py-3 px-4 text-xs text-gray-500">${d.time || ''}</td>
-                                <td class="py-3 px-4 text-center space-x-1">
-                                    <button onclick="approveDeposit('${c.key}', '${d.loginId}', ${d.amount})" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Approve</button>
-                                    <button onclick="rejectDeposit('${c.key}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Reject</button>
-                                </td>
-                            </tr>
-                        `; } }); }
+                const badge = d.method === 'bKash' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700';
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-3 px-4"><div class="font-bold text-gray-800">${d.nick || 'User'}</div>
+                            <div class="text-xs text-indigo-600 font-mono font-bold">UID: ${d.userId || d.uid || 'N/A'}</div>
+                            <div class="text-xs text-gray-500">${d.loginId}</div></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs font-bold rounded ${badge}">${d.method}</span>
+                            <div class="text-xs font-mono font-semibold text-gray-700 mt-1">${d.senderNumber}</div></td>
+                        <td class="py-3 px-4 font-bold text-green-600">৳${d.amount}</td>
+                        <td class="py-3 px-4 font-mono text-xs font-bold text-gray-800">${d.trxId}</td>
+                        <td class="py-3 px-4 text-xs text-gray-500">${d.time || ''}</td>
+                        <td class="py-3 px-4 text-center space-x-1">
+                            <button onclick="approveDeposit('${c.key}', '${d.loginId}', ${d.amount})" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Approve</button>
+                            <button onclick="rejectDeposit('${c.key}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Reject</button>
+                        </td>
+                    </tr>
+                `; } }); }
             if (!has) tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5 text-gray-400">No pending deposits</td></tr>`;
         });
 
@@ -1349,8 +863,11 @@
                     let found = false;
                     hist.forEach(h => { if (h.id === id) { h.status = "Approved"; found = true; } });
                     if (!found) hist.push({ id, type: 'Deposit Approved', amount: Number(amt), status: 'Approved', time: getFormattedServerTime() });
-                    db.ref('users/' + safe).update({ balance: Number(user.balance || 0) + Number(amt),
-                        totalDeposit: Number(user.totalDeposit || 0) + Number(amt), history: hist });
+                    db.ref('users/' + safe).update({
+                        balance: Number(user.balance || 0) + Number(amt),
+                        totalDeposit: Number(user.totalDeposit || 0) + Number(amt),
+                        history: hist
+                    });
                 }
             });
             db.ref('pendingDeposits/' + id).update({ status: 'Approved' }).then(() => alert('✅ Deposit approved!'));
@@ -1377,30 +894,130 @@
             db.ref('pendingDeposits/' + id).update({ status: 'Rejected' }).then(() => alert('❌ Deposit rejected.'));
         }
 
-        // ==================== PENDING WITHDRAWS ====================
+        // ==================== PENDING WITHDRAWS (with editable number) ====================
+        let withdrawListenersAttached = false;
+
         db.ref('pendingWithdraws').on('value', (s) => {
             const tbody = document.getElementById('withdrawTableBody');
             tbody.innerHTML = '';
             let has = false;
-            if (s.exists()) { s.forEach(c => { const d = c.val(); if (d.status === 'Pending') { has = true;
+
+            if (s.exists()) {
+                let list = [];
+                s.forEach(c => { list.push({ key: c.key, ...c.val() }); });
+                list.sort((a, b) => (b.time || '').localeCompare(a.time || ''));
+
+                list.forEach(d => {
+                    if (d.status === 'Pending') {
+                        has = true;
                         const badge = d.method === 'bKash' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700';
+                        const changed = d.originalNumber && d.originalNumber !== d.withdrawNumber;
+
                         tbody.innerHTML += `
                             <tr class="border-b hover:bg-gray-50">
-                                <td class="py-3 px-4"><div class="font-bold text-gray-800">${d.nick || 'User'}</div>
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-gray-800">${d.nick || 'User'}</div>
                                     <div class="text-xs text-indigo-600 font-mono font-bold">UID: ${d.userId || d.uid || 'N/A'}</div>
-                                    <div class="text-xs text-gray-500">${d.loginId}</div></td>
-                                <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs font-bold rounded ${badge}">${d.method}</span>
-                                    <div class="text-xs font-mono font-bold text-indigo-700 mt-1">${d.withdrawNumber}</div></td>
+                                    <div class="text-xs text-gray-500">${d.loginId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 text-xs font-bold rounded ${badge}">${d.method}</span>
+                                    <div class="text-xs font-semibold text-gray-700 mt-1">চার্জ: ৳${d.charge || 0}</div>
+                                </td>
                                 <td class="py-3 px-4 font-bold text-red-600">৳${d.amount}</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <input type="text" id="wd-num-${d.key}" 
+                                            value="${d.withdrawNumber || ''}" 
+                                            placeholder="01XXXXXXXXX"
+                                            class="wd-num-input ${changed ? 'changed' : ''}" 
+                                            maxlength="11" />
+                                        <button onclick="saveWithdrawNumber('${d.key}')" 
+                                            class="save-num-btn" id="wd-save-${d.key}"
+                                            title="Save Number">
+                                            💾 Save
+                                        </button>
+                                    </div>
+                                    ${changed ? `<div class="text-[10px] text-orange-600 mt-1 font-semibold">⚠️ আগের: ${d.originalNumber}</div>` : ''}
+                                    <div class="text-[10px] text-gray-400 mt-0.5">
+                                        ${d.updatedAt ? '🕐 আপডেট: ' + d.updatedAt : 'এখনো চেঞ্জ হয়নি'}
+                                    </div>
+                                </td>
                                 <td class="py-3 px-4 text-xs text-gray-500">${d.time || ''}</td>
                                 <td class="py-3 px-4 text-center space-x-1">
-                                    <button onclick="rejectWithdraw('${c.key}', '${d.loginId}', ${d.amount})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Reject & Refund</button>
-                                    <button onclick="completeWithdraw('${c.key}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Paid / Complete</button>
+                                    <button onclick="rejectWithdraw('${d.key}', '${d.loginId}', ${d.amount})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Reject & Refund</button>
+                                    <button onclick="completeWithdraw('${d.key}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold btn">Paid / Complete</button>
                                 </td>
                             </tr>
-                        `; } }); }
+                        `;
+                    }
+                });
+            }
             if (!has) tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5 text-gray-400">No pending withdraws</td></tr>`;
         });
+
+        // 🎯 নাম্বার চেঞ্জ + ইউজারের হিস্টোরিতেও আপডেট
+        async function saveWithdrawNumber(withdrawId) {
+            const input = document.getElementById('wd-num-' + withdrawId);
+            const saveBtn = document.getElementById('wd-save-' + withdrawId);
+            if (!input) return;
+            const newNum = input.value.trim();
+
+            if (!newNum || newNum.length < 11) {
+                alert('⚠️ সঠিক ১১ digit নাম্বার দিন!');
+                return;
+            }
+
+            if (saveBtn) { saveBtn.textContent = '⏳ Saving...'; saveBtn.disabled = true; }
+
+            try {
+                const wSnap = await db.ref('pendingWithdraws/' + withdrawId).once('value');
+                if (!wSnap.exists()) { alert('❌ Withdraw পাওয়া যায়নি!'); return; }
+                const w = wSnap.val();
+
+                await db.ref('pendingWithdraws/' + withdrawId).update({
+                    withdrawNumber: newNum,
+                    originalNumber: w.originalNumber || w.withdrawNumber || '',
+                    updatedAt: getFormattedServerTime(),
+                    updatedBy: 'admin'
+                });
+
+                const safe = sanitizeKey(w.loginId);
+                const histSnap = await db.ref('users/' + safe + '/history').once('value');
+                const history = histSnap.val() || {};
+                let updatedCount = 0;
+
+                for (let hkey in history) {
+                    const h = history[hkey];
+                    if (h.id === withdrawId) {
+                        await db.ref('users/' + safe + '/history/' + hkey).update({
+                            number: newNum,
+                            adminUpdated: true,
+                            adminUpdatedAt: getFormattedServerTime()
+                        });
+                        updatedCount++;
+                    }
+                }
+
+                const method = w.method || 'bKash';
+                await db.ref('users/' + safe + '/linkedNumbers/' + method).set(newNum);
+                await db.ref('users/' + safe + '/linkedWithdrawNumber').set(newNum);
+
+                if (saveBtn) { saveBtn.textContent = '✅ Saved'; saveBtn.classList.add('saved'); }
+                input.classList.remove('changed');
+                input.classList.add('saved');
+
+                alert(`✅ নাম্বার সেভ হয়েছে!\n\n👤 ইউজার: ${w.nick || w.loginId}\n📱 নতুন নাম্বার: ${newNum}\n📜 History-তে ${updatedCount}টি entry আপডেট হয়েছে\n\n🔄 ইউজারের অ্যাপে এখন নতুন নাম্বার দেখাবে।`);
+
+                setTimeout(() => {
+                    if (saveBtn) { saveBtn.textContent = '💾 Save'; saveBtn.classList.remove('saved'); saveBtn.disabled = false; }
+                }, 2500);
+
+            } catch (err) {
+                alert('❌ সমস্যা: ' + err.message);
+                if (saveBtn) { saveBtn.textContent = '💾 Save'; saveBtn.disabled = false; }
+            }
+        }
 
         function completeWithdraw(id) {
             if (!confirm('Mark as completed? Payment sent?')) return;
@@ -1409,19 +1026,31 @@
                     const d = s.val();
                     const safe = sanitizeKey(d.loginId);
                     const amt = Number(d.amount || 0);
+
+                    const inputEl = document.getElementById('wd-num-' + id);
+                    const finalNumber = inputEl ? inputEl.value.trim() : d.withdrawNumber;
+
                     db.ref('users/' + safe).once('value', (u) => {
                         if (u.exists()) {
                             const user = u.val();
                             let hist = user.history || [];
                             let found = false;
-                            hist.forEach(h => { if (h.id === id || (h.type && h.type.includes('Withdraw') && Math.abs(h.amount) === amt && h.status === 'Pending')) { h.status = 'Completed'; h.type = `Withdraw Completed (${d.method})`; h.amount = -amt; found = true; } });
-                            if (!found) hist.push({ id, type: `Withdraw Completed (${d.method})`, amount: -amt, status: 'Completed', time: getFormattedServerTime() });
+                            hist.forEach(h => {
+                                if (h.id === id || (h.type && h.type.includes('Withdraw') && Math.abs(h.amount) === amt && h.status === 'Pending')) {
+                                    h.status = 'Completed';
+                                    h.type = `Withdraw Completed (${d.method})`;
+                                    h.amount = -amt;
+                                    h.number = finalNumber;
+                                    found = true;
+                                }
+                            });
+                            if (!found) hist.push({ id, type: `Withdraw Completed (${d.method})`, amount: -amt, status: 'Completed', number: finalNumber, time: getFormattedServerTime() });
                             db.ref('users/' + safe).update({ history: hist });
                         }
                     });
                 }
             });
-            db.ref('pendingWithdraws/' + id).update({ status: 'Completed' }).then(() => alert('✅ Withdraw marked completed.'));
+            db.ref('pendingWithdraws/' + id).update({ status: 'Completed', processedAt: getFormattedServerTime() }).then(() => alert('✅ Withdraw marked completed.'));
         }
 
         function rejectWithdraw(id, loginId, amt) {
@@ -1435,14 +1064,17 @@
                     let found = false;
                     hist.forEach(h => { if (h.id === id) { h.status = 'Rejected'; h.type = 'Withdraw Refunded'; h.amount = amt; found = true; } });
                     if (!found) hist.push({ id, type: 'Withdraw Refunded', amount: amt, status: 'Rejected', time: getFormattedServerTime() });
-                    db.ref('users/' + safe).update({ balance: Number(user.balance || 0) + amt,
-                        totalWithdraw: Math.max(0, Number(user.totalWithdraw || 0) - amt), history: hist });
+                    db.ref('users/' + safe).update({
+                        balance: Number(user.balance || 0) + amt,
+                        totalWithdraw: Math.max(0, Number(user.totalWithdraw || 0) - amt),
+                        history: hist
+                    });
                 }
             });
-            db.ref('pendingWithdraws/' + id).update({ status: 'Rejected' }).then(() => alert('✅ Withdraw rejected and refunded.'));
+            db.ref('pendingWithdraws/' + id).update({ status: 'Rejected', processedAt: getFormattedServerTime() }).then(() => alert('✅ Withdraw rejected and refunded.'));
         }
 
-        // ==================== USERS LIST (Last 30) with BLOCK/UNBLOCK ====================
+        // ==================== USERS LIST ====================
         let usersListLoaded = false;
 
         function loadUsersList() {
@@ -1457,20 +1089,9 @@
                     snapshot.forEach(child => { users.push({ key: child.key, ...child.val() }); });
                     users.reverse();
 
-                    if (users.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-gray-400">No users found</td></tr>`;
-                        usersListLoaded = true;
-                        return;
-                    }
-
-                    // Fetch all blocked users to show correct button state
                     db.ref('blocked_users').once('value', (blockSnap) => {
                         const blockedMap = {};
-                        if (blockSnap.exists()) {
-                            blockSnap.forEach(bChild => {
-                                blockedMap[bChild.key] = bChild.val();
-                            });
-                        }
+                        if (blockSnap.exists()) blockSnap.forEach(bChild => { blockedMap[bChild.key] = bChild.val(); });
 
                         users.forEach(u => {
                             const safeKey = sanitizeKey(u.loginId);
@@ -1506,41 +1127,39 @@
             });
         }
 
-        // ===== BLOCK / UNBLOCK USER (from users list) =====
+        function selectAndSearchUser(userIdOrLogin) {
+            document.getElementById('searchUidInput').value = userIdOrLogin;
+            navigateTo('search');
+            setTimeout(() => searchUserByUid(), 200);
+        }
+
         function toggleBlockUser(loginId, block) {
             const safeKey = sanitizeKey(loginId);
             if (block) {
                 const reason = prompt('Enter block reason (optional):', 'Terms Violation');
                 if (reason === null) return;
                 db.ref('blocked_users/' + safeKey).set({
-                    blocked: true,
-                    reason: reason.trim() || 'Terms Violation',
-                    blockedAt: getFormattedServerTime()
+                    blocked: true, reason: reason.trim() || 'Terms Violation', blockedAt: getFormattedServerTime()
                 }).then(() => {
-                    alert(`✅ User ${loginId} has been BLOCKED.`);
+                    alert(`✅ User ${loginId} BLOCKED.`);
                     usersListLoaded = false;
                     loadUsersList();
                     loadBlockedUsers();
-                    // Update badge
-                    db.ref('blocked_users').once('value', snap => {
-                        document.getElementById('blockedBadge').innerText = snap.exists() ? snap.numChildren() : 0;
-                    });
+                    db.ref('blocked_users').once('value', snap => { document.getElementById('blockedBadge').innerText = snap.exists() ? snap.numChildren() : 0; });
                 }).catch(err => alert('Error: ' + err.message));
             } else {
                 if (!confirm(`Unblock user ${loginId}?`)) return;
                 db.ref('blocked_users/' + safeKey).remove().then(() => {
-                    alert(`✅ User ${loginId} has been UNBLOCKED.`);
+                    alert(`✅ User ${loginId} UNBLOCKED.`);
                     usersListLoaded = false;
                     loadUsersList();
                     loadBlockedUsers();
-                    db.ref('blocked_users').once('value', snap => {
-                        document.getElementById('blockedBadge').innerText = snap.exists() ? snap.numChildren() : 0;
-                    });
+                    db.ref('blocked_users').once('value', snap => { document.getElementById('blockedBadge').innerText = snap.exists() ? snap.numChildren() : 0; });
                 }).catch(err => alert('Error: ' + err.message));
             }
         }
 
-        // ==================== BLOCKED USERS LIST ====================
+        // ==================== BLOCKED USERS ====================
         function loadBlockedUsers() {
             const tbody = document.getElementById('blockedUsersTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5"><div class="loader"></div><p class="text-gray-400 text-sm mt-2">Loading blocked users...</p></td></tr>`;
@@ -1551,31 +1170,16 @@
                     tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5 text-gray-400">No blocked users.</td></tr>`;
                     return;
                 }
-
-                // We need to fetch user details for each blocked entry
                 const blockedEntries = [];
-                snap.forEach(child => {
-                    blockedEntries.push({ key: child.key, ...child.val() });
-                });
+                snap.forEach(child => { blockedEntries.push({ key: child.key, ...child.val() }); });
 
-                // For each blocked, get user info from users node
                 const promises = blockedEntries.map(entry => {
                     return db.ref('users/' + entry.key).once('value').then(userSnap => {
                         if (userSnap.exists()) {
                             const user = userSnap.val();
-                            return {
-                                ...entry,
-                                nick: user.nick || 'Unknown',
-                                userId: user.userId || 'N/A',
-                                loginId: user.loginId || entry.key
-                            };
+                            return { ...entry, nick: user.nick || 'Unknown', userId: user.userId || 'N/A', loginId: user.loginId || entry.key };
                         } else {
-                            return {
-                                ...entry,
-                                nick: 'Deleted User',
-                                userId: 'N/A',
-                                loginId: entry.key
-                            };
+                            return { ...entry, nick: 'Deleted User', userId: 'N/A', loginId: entry.key };
                         }
                     });
                 });
@@ -1601,15 +1205,12 @@
             });
         }
 
-        // ==================== BROADCAST NOTIFICATIONS ====================
+        // ==================== BROADCAST ====================
         function sendNotification() {
-            const t = document.getElementById('notifTitle').value.trim(),
-                b = document.getElementById('notifBody').value.trim();
+            const t = document.getElementById('notifTitle').value.trim(), b = document.getElementById('notifBody').value.trim();
             if (!t || !b) { alert('Please enter both title and message!'); return; }
             db.ref('notifications').push({ title: t, body: b, timestamp: Date.now() })
-                .then(() => { alert('✅ Notification broadcasted!');
-                    document.getElementById('notifTitle').value = '';
-                    document.getElementById('notifBody').value = ''; })
+                .then(() => { alert('✅ Notification broadcasted!'); document.getElementById('notifTitle').value = ''; document.getElementById('notifBody').value = ''; })
                 .catch(err => alert('Error: ' + err.message));
         }
 
@@ -1638,38 +1239,20 @@
             const title = document.getElementById('adminNoticeTitle').value.trim();
             const body = document.getElementById('adminNoticeBody').value.trim();
             const statusDiv = document.getElementById('noticeStatus');
-
-            if (!title || !body) {
-                statusDiv.innerHTML = '<span class="text-red-500">❌ Please enter both title and body!</span>';
-                return;
-            }
-
-            const noticeData = {
-                title: title,
-                body: body,
-                timestamp: Date.now(),
-                time: getFormattedServerTime()
-            };
-
-            db.ref('admin_notices').push(noticeData)
+            if (!title || !body) { statusDiv.innerHTML = '<span class="text-red-500">❌ Please enter both title and body!</span>'; return; }
+            db.ref('admin_notices').push({ title, body, timestamp: Date.now(), time: getFormattedServerTime() })
                 .then(() => {
                     statusDiv.innerHTML = '<span class="text-green-500">✅ Notice posted successfully!</span>';
                     document.getElementById('adminNoticeTitle').value = '';
                     document.getElementById('adminNoticeBody').value = '';
                     loadAdminNotices();
-                })
-                .catch(err => {
-                    statusDiv.innerHTML = `<span class="text-red-500">❌ Error: ${err.message}</span>`;
-                });
+                }).catch(err => { statusDiv.innerHTML = `<span class="text-red-500">❌ Error: ${err.message}</span>`; });
         }
 
         function loadAdminNotices() {
             const container = document.getElementById('adminNoticesList');
             db.ref('admin_notices').orderByChild('timestamp').limitToLast(20).on('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    container.innerHTML = '<p class="text-sm text-gray-400">No notices posted yet.</p>';
-                    return;
-                }
+                if (!snapshot.exists()) { container.innerHTML = '<p class="text-sm text-gray-400">No notices posted yet.</p>'; return; }
                 let html = '';
                 snapshot.forEach(child => {
                     const notice = child.val();
@@ -1690,9 +1273,7 @@
 
         function deleteAdminNotice(key) {
             if (!confirm('Delete this notice?')) return;
-            db.ref('admin_notices/' + key).remove()
-                .then(() => alert('✅ Notice deleted.'))
-                .catch(err => alert('Error: ' + err.message));
+            db.ref('admin_notices/' + key).remove().then(() => alert('✅ Notice deleted.')).catch(err => alert('Error: ' + err.message));
         }
 
         // ==================== GAME STATS ====================
@@ -1703,70 +1284,40 @@
             const totalLossEl = document.getElementById('totalLossAmount');
             const winRateEl = document.getElementById('winRate');
             const badgeEl = document.getElementById('gameStatsBadge');
-            
+
             db.ref('game_spins').orderByChild('timestamp').limitToLast(100).on('value', (snapshot) => {
                 if (!snapshot.exists()) {
                     tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5 text-gray-400">No game data found</td></tr>`;
-                    totalSpinsEl.textContent = '0';
-                    totalWinEl.textContent = '0';
-                    totalLossEl.textContent = '0';
-                    winRateEl.textContent = '0%';
+                    totalSpinsEl.textContent = '0'; totalWinEl.textContent = '0'; totalLossEl.textContent = '0'; winRateEl.textContent = '0%';
                     if (badgeEl) badgeEl.textContent = '0';
                     return;
                 }
-                
                 let spins = [];
-                let totalWin = 0;
-                let totalLoss = 0;
-                let winCount = 0;
-                
+                let totalWin = 0, totalLoss = 0, winCount = 0;
+
                 snapshot.forEach(child => {
                     const data = child.val();
-                    spins.push({
-                        id: child.key,
-                        userId: data.userId || 'Unknown',
-                        nick: data.nick || 'Unknown',
-                        betAmount: data.betAmount || 0,
-                        winAmount: data.winAmount || 0,
-                        result: data.result || 'N/A',
-                        status: data.status || 'loss',
-                        timestamp: data.timestamp || 'N/A'
-                    });
-                    
-                    if (data.status === 'win') {
-                        totalWin += data.winAmount || 0;
-                        winCount++;
-                    } else {
-                        totalLoss += data.betAmount || 0;
-                    }
+                    spins.push({ id: child.key, userId: data.userId || 'Unknown', nick: data.nick || 'Unknown', betAmount: data.betAmount || 0, winAmount: data.winAmount || 0, result: data.result || 'N/A', status: data.status || 'loss', timestamp: data.timestamp || 'N/A' });
+                    if (data.status === 'win') { totalWin += data.winAmount || 0; winCount++; }
+                    else { totalLoss += data.betAmount || 0; }
                 });
-                
                 spins.reverse();
-                
+
                 totalSpinsEl.textContent = spins.length;
                 totalWinEl.textContent = totalWin.toFixed(2);
                 totalLossEl.textContent = totalLoss.toFixed(2);
                 const winRate = spins.length > 0 ? ((winCount / spins.length) * 100).toFixed(1) : 0;
                 winRateEl.textContent = winRate + '%';
                 if (badgeEl) badgeEl.textContent = spins.length;
-                
-                if (spins.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-5 text-gray-400">No game data found</td></tr>`;
-                    return;
-                }
-                
+
                 tbody.innerHTML = spins.map(spin => {
-                    const statusBadge = spin.status === 'win' 
+                    const statusBadge = spin.status === 'win'
                         ? '<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">✅ Win</span>'
                         : '<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold">❌ Loss</span>';
                     const winAmountClass = spin.status === 'win' ? 'text-green-600 font-bold' : 'text-red-400';
-                    
                     return `
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="py-2.5 px-4">
-                                <div class="font-bold text-gray-800">${spin.nick}</div>
-                                <div class="text-xs text-indigo-600 font-mono">${spin.userId}</div>
-                            </td>
+                            <td class="py-2.5 px-4"><div class="font-bold text-gray-800">${spin.nick}</div><div class="text-xs text-indigo-600 font-mono">${spin.userId}</div></td>
                             <td class="py-2.5 px-4 font-bold text-gray-700">৳${spin.betAmount.toFixed(2)}</td>
                             <td class="py-2.5 px-4 ${winAmountClass}">${spin.status === 'win' ? '+' : ''}৳${spin.winAmount.toFixed(2)}</td>
                             <td class="py-2.5 px-4 font-mono font-bold">${spin.result}</td>
@@ -1793,7 +1344,7 @@
 
         document.addEventListener('DOMContentLoaded', init);
 
-        // Make functions global for onclick
+        // ==================== GLOBAL EXPORTS ====================
         window.addEntry = addEntry;
         window.deleteEntry = deleteEntry;
         window.saveDepositSettings = saveDepositSettings;
@@ -1810,6 +1361,7 @@
         window.rejectDeposit = rejectDeposit;
         window.completeWithdraw = completeWithdraw;
         window.rejectWithdraw = rejectWithdraw;
+        window.saveWithdrawNumber = saveWithdrawNumber; // 🎯 NEW
         window.selectAndSearchUser = selectAndSearchUser;
         window.sendNotification = sendNotification;
         window.closeNotificationModal = closeNotificationModal;
